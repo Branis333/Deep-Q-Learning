@@ -1,10 +1,6 @@
 import argparse
 import os
 import time
-from dataclasses import dataclass, asdict
-from typing import Dict, List, Tuple
-
-import numpy as np
 import gymnasium as gym
 import ale_py  # ensure ALE namespace is registered
 from stable_baselines3.common.env_util import make_atari_env
@@ -12,14 +8,11 @@ from stable_baselines3.common.vec_env import VecFrameStack
 
 
 def parse_args() -> argparse.Namespace:
-	parser = argparse.ArgumentParser(description="Train DQN on Pong with CNN or MLP policy.")
-	parser.add_argument("--policy", choices=["cnn", "mlp"], default="cnn", help="Policy type to train (default: cnn).")
-	parser.add_argument("--timesteps", type=int, default=100_000, help="Total training timesteps.")
-	parser.add_argument("--seed", type=int, default=42, help="Random seed.")
-	parser.add_argument("--eval-episodes", type=int, default=5, help="Episodes for post-training eval.")
-	parser.add_argument("--compare", action="store_true", help="Train & evaluate both policies.")
-	parser.add_argument("--show-hparams", action="store_true", help="Print planned hyperparameter sets and exit.")
-	return parser.parse_args()
+    parser = argparse.ArgumentParser(description="View Atari Pong environment (no training).")
+    parser.add_argument("--episodes", type=int, default=1, help="Number of episodes to render.")
+    parser.add_argument("--seed", type=int, default=42, help="Random seed for environment.")
+    parser.add_argument("--fps", type=float, default=60.0, help="Approximate render FPS throttle.")
+    return parser.parse_args()
 
 
 def main():
