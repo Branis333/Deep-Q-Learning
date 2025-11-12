@@ -1,9 +1,9 @@
-stable-baselines3>=2.3.2  # Allow newer SB3 versions that support Gymnasium 1.x
-gymnasium[atari]>=1.0.0,<1.2  # Use 1.x since 0.29 requires ale-py 0.8.x wheels not available for your Python version
-shimmy>=0.2.1,<1.0  # Compatible shimmy for Atari interfaces
+stable-baselines3  # Allow newer SB3 versions that support Gymnasium 1.x
+gymnasium[atari]  # Use 1.x since 0.29 requires ale-py 0.8.x wheels not available for your Python version
+shimmy  # Compatible shimmy for Atari interfaces
 # Explicitly include ALE interface (sometimes not pulled automatically on some setups)
-ale-py>=0.10.1,<0.12
+ale-py
 # Auto-install ROMs (run once): AutoROM --accept-license
-autorom[accept-rom-license]>=0.6.1,<0.7
-numpy>=1.23,<2.0
+autorom[accept-rom-license]
+numpy
 
