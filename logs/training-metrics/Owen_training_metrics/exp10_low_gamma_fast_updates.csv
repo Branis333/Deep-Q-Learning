@@ -1,0 +1,2 @@
+name,mean_reward,std_reward,train_minutes,learning_rate,gamma,batch_size,buffer_size,train_freq,gradient_steps,target_update_interval,exploration_fraction,exploration_initial_eps,exploration_final_eps,verbose
+exp10_low_gamma_fast_updates,-7.333333333333333,3.299831645537222,86.69437215725581,0.0002,0.97,32,100000,2,1,4000,0.1,1.0,0.03,0

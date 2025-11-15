@@ -1,0 +1,2 @@
+name,mean_reward,std_reward,train_minutes,learning_rate,gamma,batch_size,buffer_size,train_freq,gradient_steps,target_update_interval,exploration_fraction,exploration_initial_eps,exploration_final_eps,verbose
+exp1_new_baseline,-20.666666666666668,0.4714045207910317,14.906584525108338,0.000125,0.99,32,100000,4,1,8000,0.1,1.0,0.02,0
