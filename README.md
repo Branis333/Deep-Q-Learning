@@ -33,15 +33,18 @@ Deep-Q-Learning/
 ├── play.py                            # Inference/gameplay script
 ├── notebooks/
 │   ├── branis.ipynb                   
-│   ├── excel1.ipynb                  
-│   └── excel2.ipynb                   
+│   ├── excel1.ipynb     
+│   ├── excel2.ipynb  
+│   ├── owen.ipynb                 
+│   └── roxanne.ipynb                   
 ├── models/
 │   ├── Branis_model/                  
 │   ├── Excel_model/                   
 │   └── Owen_model/                    
 │   └── Roxanne_model/                 
 ├── logs/
-│   ├── training-metrics/              # Episode-level training logs (CSV)
+│   ├── training-metrics/    
+│   ├── Branis_training_metrics/          # Episode-level training logs (CSV)
 │   ├── Excel_training_metrics/
 │   ├── Owen_training_metrics/         
 │   ├── Roxanne_training_metrics/      
