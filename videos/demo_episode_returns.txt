@@ -1,0 +1,96 @@
+# Demo Video Episode Returns
+## Generated on 2025-11-17
+
+---
+
+## Branis Model: exp10_more_gradient_steps.zip
+Model: models/Branis_model/exp10_more_gradient_steps.zip
+Episodes: 10
+Mean Reward: 6.7 (training baseline)
+
+| Episode | Return |
+|---------|--------|
+| 1       | 8.00   |
+| 2       | -4.00  |
+| 3       | 9.00   |
+| 4       | 8.00   |
+| 5       | 4.00   |
+| 6       | 4.00   |
+| 7       | 15.00  |
+| 8       | -2.00  |
+| 9       | 8.00   |
+| 10      | 5.00   |
+
+**Demo Statistics:**
+- Sum: 55.00
+- Mean: 5.50
+- Min: -4.00
+- Max: 15.00
+
+---
+
+## Owen Model: exp8_multi_gradient_steps_best.zip
+Model: models/Owen_model/exp8_multi_gradient_steps_best.zip
+Episodes: 10
+Mean Reward: -6.00 (training baseline)
+
+| Episode | Return |
+|---------|--------|
+| 1       | 1.00   |
+| 2       | -10.00 |
+| 3       | -9.00  |
+| 4       | -8.00  |
+| 5       | -8.00  |
+| 6       | -4.00  |
+| 7       | -13.00 |
+| 8       | -10.00 |
+| 9       | -9.00  |
+| 10      | -10.00 |
+
+**Demo Statistics:**
+- Sum: -80.00
+- Mean: -8.00
+- Min: -13.00
+- Max: 1.00
+
+---
+
+## Excel Model: excel_best_dqn.zip
+Model: models/Excel_model/excel_best_dqn.zip
+Episodes: 10
+Mean Reward: -10.85 (training baseline)
+
+| Episode | Return |
+|---------|--------|
+| 1       | -5.00  |
+| 2       | 7.00   |
+| 3       | 15.00  |
+| 4       | 6.00   |
+| 5       | 1.00   |
+| 6       | -2.00  |
+| 7       | -12.00 |
+| 8       | 6.00   |
+| 9       | -1.00  |
+| 10      | 7.00   |
+
+**Demo Statistics:**
+- Sum: 22.00
+- Mean: 2.20
+- Min: -12.00
+- Max: 15.00
+
+---
+
+## Overall Observations
+
+### Performance Ranking (by demo mean return)
+1. **Branis** (5.50) - Best performing in demo; consistent positive returns
+2. **Excel** (2.20) - Mixed performance; high variance
+3. **Owen** (-8.00) - Negative returns; model struggles with random seeds
+
+### Key Notes
+- Branis's extended training (500k timesteps) shows stable positive performance
+- Excel's CNN policy shows high variance (range: -12 to +15)
+- Owen's multi-gradient approach trades off exploration for stability but results in negative returns
+- All models demonstrate the challenge of learning in sparse reward environments (Pong)
+- Demo episode returns differ from training means, reflecting variance in agent behavior
