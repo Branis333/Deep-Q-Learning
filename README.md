@@ -265,7 +265,7 @@ python play.py --help
 
 **Episode 7 Return: 15.00** (Best performing episode)
 
-[▶️ Watch Branis Demo Video](videos/branis_demo-episode-12.mp4)
+[▶️ Watch Branis Demo Video](https://drive.google.com/file/d/1MsPk1w5dAUm3NkBr0MdBTS0qG_NyGfPe/view)
 
 ---
 
