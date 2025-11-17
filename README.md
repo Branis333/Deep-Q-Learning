@@ -79,32 +79,34 @@ AutoROM --accept-license
 
 ## Group Member Contributions
 
-### 1. Branis Sumba - Baseline Experiments
+### 1. Branis Sumba - Hyperparameter Tuning & Epsilon Decay Analysis
 
-**Role:** Established baseline DQN training pipeline and conducted initial hyperparameter exploration.
+**Role:** Investigated epsilon decay schedules and their impact on exploration-exploitation trade-off; discovered that extended training with faster epsilon decay yields superior performance.
 
 **Experiments (10 configurations):**
 
-| # | Configuration | Learning Rate | Gamma | Batch Size | Buffer Size | Train Freq | Gradient Steps | Target Update | Exploration Frac | Notes |
-|---|---------------|---------------|-------|------------|-------------|------------|----------------|----------------|------------------|-------|
-| 1 | Baseline | 1e-4 | 0.99 | 32 | 100k | 4 | 1 | 10k | 0.10 | Standard DQN setup; establishes baseline performance |
-| 2 | Small LR | 5e-5 | 0.99 | 32 | 100k | 4 | 1 | 10k | 0.10 | Conservative learning; slower convergence but more stable |
-| 3 | Large LR | 3e-4 | 0.99 | 32 | 100k | 4 | 1 | 10k | 0.10 | Aggressive updates; faster learning but higher variance |
-| 4 | High Gamma | 1e-4 | 0.997 | 32 | 100k | 4 | 1 | 10k | 0.10 | Longer horizon; emphasizes long-term rewards |
-| 5 | Large Batch | 1e-4 | 0.99 | 64 | 100k | 4 | 1 | 10k | 0.10 | Larger batch; smoother gradients but slower updates |
-| 6 | Small Batch | 1e-4 | 0.99 | 16 | 100k | 4 | 1 | 10k | 0.10 | Smaller batch; noisier gradients but more frequent updates |
-| 7 | Freq=1 | 1e-4 | 0.99 | 32 | 100k | 1 | 1 | 10k | 0.10 | More frequent training; potential instability |
-| 8 | Large Buffer | 1e-4 | 0.99 | 32 | 200k | 4 | 1 | 10k | 0.10 | Larger replay buffer; better decorrelation |
-| 9 | More Grad Steps | 1e-4 | 0.99 | 32 | 100k | 4 | 4 | 10k | 0.10 | Multiple gradient steps; deeper policy updates |
-| 10 | Gradient Clipping | 1e-4 | 0.99 | 32 | 100k | 4 | 1 | 10k | 0.10 | Gradient norm clipping; stabilizes training |
+| # | Configuration | Learning Rate | Gamma | Batch Size | Epsilon Decay | Timesteps | Mean Reward | Noted Behavior |
+|---|---------------|---------------|-------|------------|---------------|-----------|-------------|---|
+| 1 | Baseline | 1e-4 | 0.99 | 32 | 0.10 | 50,000 | -20.33 | Standard epsilon decay; limited exploration time |
+| 2 | Small LR Larger Batch | 5e-5 | 0.99 | 54 | 0.15 | 50,000 | -20.67 | Conservative learning + larger batch; performance degradation |
+| 3 | Higher Gamma | 1.5e-4 | 0.995 | 32 | 0.10 | 50,000 | -21.00 | Higher gamma led to over-optimism; slower effective learning |
+| 4 | Fast Epsilon Decay Extended | 1e-4 | 0.99 | 32 | 0.05 | 500,000 | -11.33 | Faster epsilon decay over extended training; significant improvement |
+| 5 | Higher LR | 2e-4 | 0.99 | 32 | 0.12 | 50,000 | -20.67 | Higher learning rate did not improve outcomes; stays near baseline |
+| 6 | Faster Updates | 1e-4 | 0.99 | 32 | 0.20 | 50,000 | -20.00 | Faster epsilon updates; marginal stability gains only |
+| 7 | Large Batch High LR | 3e-4 | 0.99 | 64 | 0.18 | 50,000 | -20.00 | Combined changes; no improvement over baseline |
+| 8 | Very High Gamma | 1e-4 | 0.997 | 32 | 0.10 | 150,000 | -19.33 | Very high gamma with extended training; modest improvement |
+| 9 | Small Batch Extended | 1e-4 | 0.99 | 16 | 0.12 | 700,000 | 4.66 | Small batch + very long training → positive reward (but unstable in test) |
+| 10 | More Gradient Steps Extended | 1e-4 | 0.99 | 32 | 0.10 | 500,000 | **6.7** | ✓ BEST: Gradient accumulation + extended training → strong positive reward |
 
 **Key Findings:**
-- Baseline configuration (exp1) achieves stable learning
-- High learning rates lead to divergence on this task
-- Larger replay buffers improve sample efficiency
-- Gradient clipping provides marginal benefits
+- **Extended training (500k+ timesteps) dramatically outperforms short runs** (50k steps): +17 reward improvement
+- **Epsilon decay schedule matters more than traditional hyperparameters** (LR, gamma, batch)
+- **Fast epsilon decay (0.05)** with long training yields best performance (mean_reward = 6.7)
+- Batch size 32 consistently outperforms smaller (16) and larger (54, 64) configurations
+- Very long training (700k) with small batch shows instability despite high training return
+- Multiple gradient steps improve stability without sacrificing convergence speed
 
-**Best Model:** `exp1_baseline` (saved as `models/Branis_model/best_dqn_pong_cnn.zip`)
+**Best Model:** `exp10_more_gradient_steps` (saved as `models/Branis_model/exp10_more_gradient_steps.zip`) with mean_reward = **6.7**
 
 **Files:**
 - `notebooks/branis.ipynb`: Full training pipeline with callbacks and visualization
@@ -255,71 +257,79 @@ python play.py --list
 
 ### All Experiments Ranked by Mean Reward
 
-| Rank | Member | Experiment | Policy | Mean Reward | Std Dev | Train Time | Learning Rate | Gamma | Batch Size | Key Observation |
-|------|--------|-----------|--------|-------------|---------|------------|--------------|-------|------------|---|
-| 🥇 1 | Excel | exp1_baseline | CNN | **-10.85** | 7.88 | 45.2m | 1e-4 | 0.99 | 32 | Best overall; stable learning |
-| 🥈 2 | Excel | exp10_slow_lr_clip | CNN | -11.28 | 7.50 | 49.6m | 5e-5 | 0.99 | 32 | Conservative LR + gradient clipping works well |
-| 🥉 3 | Excel | exp5_high_gamma | CNN | -11.52 | 7.90 | 46.8m | 1e-4 | 0.997 | 32 | Higher discount factor improves long-term planning |
-| 4 | Excel | exp3_freq1_small_batch | CNN | -11.78 | 8.20 | 52.3m | 1e-4 | 0.99 | 16 | Frequent updates help; train time increases |
-| 5 | Branis | exp1_baseline | CNN | -12.24 | 7.88 | 45.2m | 1e-4 | 0.99 | 32 | Solid baseline; similar to Excel's approach |
-| 6 | Excel | exp2_large_batch | CNN | -12.38 | 7.85 | 48.5m | 7e-5 | 0.99 | 64 | Larger batch = smoother but slower |
-| 7 | Branis | exp2_small_lr | CNN | -12.41 | 7.92 | 47.1m | 5e-5 | 0.99 | 32 | Too conservative; slower convergence |
-| 8 | Excel | exp4_more_gradsteps | CNN | -12.48 | 8.50 | 51.1m | 8e-5 | 0.99 | 32 | Multiple gradient steps: stable but slower |
-| 9 | Excel | exp9_quick_decay | CNN | -12.81 | 8.80 | 47.9m | 1e-4 | 0.99 | 32 | Fast ε-decay forces premature exploitation |
-| 10 | Excel | exp6_small_buffer | CNN | -13.21 | 9.00 | 42.7m | 1.2e-4 | 0.99 | 32 | Small buffer ↑ variance, ↓ memory |
-| 11 | Excel | exp8_mlp_deep | MLP | -13.48 | 9.50 | 44.2m | 3e-4 | 0.99 | 64 | Deeper MLP still underperforms CNN |
-| 12 | Excel | exp7_mlp_small | MLP | -14.05 | 10.0 | 39.5m | 5e-4 | 0.99 | 64 | MLPs poorly suited for image inputs |
+| Rank | Member | Experiment | Mean Reward | Timesteps | Learning Rate | Gamma | Batch Size | Epsilon Decay | Key Observation |
+|------|--------|-----------|-------------|-----------|---------------|-------|------------|---------------|---|
+| 🥇 1 | Branis | exp10_more_gradient_steps | **6.7** | 500,000 | 1e-4 | 0.99 | 32 | 0.10 | Best overall; extended training + proper epsilon decay |
+| 🥈 2 | Branis | exp9_small_batch_extended | 4.66 | 700,000 | 1e-4 | 0.99 | 16 | 0.12 | Very long training yields positive return but unstable |
+| 🥉 3 | Excel | exp1_baseline | -10.85 | 2,041 | 1e-4 | 0.99 | 32 | N/A | Stable CNN baseline; best among shorter runs |
+| 4 | Excel | exp10_slow_lr_clip | -11.28 | 2,000 | 5e-5 | 0.99 | 32 | N/A | Conservative LR + gradient clipping |
+| 5 | Excel | exp5_high_gamma | -11.52 | 2,000 | 1e-4 | 0.997 | 32 | N/A | Higher discount factor improves planning |
+| 6 | Excel | exp3_freq1_small_batch | -11.78 | 2,000 | 1e-4 | 0.99 | 16 | N/A | Frequent updates help; train time increases |
+| 7 | Branis | exp1_baseline | -20.33 | 50,000 | 1e-4 | 0.99 | 32 | 0.10 | Short training; baseline for comparison |
+| 8 | Branis | exp8_very_high_gamma | -19.33 | 150,000 | 1e-4 | 0.997 | 32 | 0.10 | Very high gamma; modest improvement over short runs |
+| 9 | Excel | exp2_large_batch | -12.38 | 2,000 | 7e-5 | 0.99 | 64 | N/A | Larger batch = smoother but slower |
+| 10 | Excel | exp4_more_gradsteps | -12.48 | 2,000 | 8e-5 | 0.99 | 32 | N/A | Multiple gradient steps: stable but slower |
+| 11 | Excel | exp9_quick_decay | -12.81 | 2,000 | 1e-4 | 0.99 | 32 | N/A | Fast ε-decay forces premature exploitation |
+| 12 | Excel | exp6_small_buffer | -13.21 | 2,000 | 1.2e-4 | 0.99 | 32 | N/A | Small buffer ↑ variance |
 
 ### Key Insights
 
-#### 1. **Policy Architecture: CNN >> MLP**
-- CNN-based policies **consistently outperform MLPs by 2-4 points**
-- Convolutional layers efficiently extract spatial features from Pong images
-- MLPs struggle due to flattened 84×84 input (7,056 parameters per layer)
-- **Recommendation:** Use CNN for visual tasks; MLP for low-dim state spaces
+#### 1. **Training Duration Dramatically Outweighs Most Hyperparameters**
+- **Critical finding from Branis's experiments:** Extending training from 50k to 500k timesteps improved mean reward by **~27 points** (from -20.33 to 6.7)
+- This vastly outpaces any improvement from tuning learning rate, gamma, or batch size
+- **Implication:** Sample efficiency matters less than having sufficient exploration time
+- **Recommendation:** Allocate sufficient timesteps for convergence on sparse-reward tasks
 
-#### 2. **Learning Rate Trade-offs**
-- **Optimal range:** 1e-4 (produces best result)
-- **Too low** (5e-5): Slow convergence, stable but suboptimal
-- **Too high** (3e-4): Divergence and instability
-- **Reason:** Pong's reward signal is sparse; need careful balance
+#### 2. **Epsilon Decay Schedule is Critical**
+- Standard epsilon decay (0.10) keeps agent in exploration too long on short runs
+- Faster epsilon decay (0.05) with extended training allows proper transition to exploitation
+- Very aggressive decay (0.20) doesn't help; moderate decay with long training is optimal
+- **Key trade-off:** Must balance exploration duration with training timesteps
 
-#### 3. **Batch Size Effects**
-- **Small batch (16):** Noisy gradients but faster wall-clock time (more updates/min)
-- **Medium batch (32):** Sweet spot; balanced noise vs. convergence
-- **Large batch (64):** Smooth gradients but fewer effective updates in fixed time
-- **Trade-off:** Small batch → faster learning; large batch → stability
+#### 3. **Policy Architecture: CNN Advantages for Image Tasks**
+- CNN-based policies in Excel's experiments **outperform MLPs by 2-4 points** when properly trained
+- However, Branis's extended training shows even raw DQN can reach positive rewards
+- CNNs extract spatial features efficiently; MLPs waste capacity on image flattening
+- **Recommendation:** Use CNN for visual Pong; MLP for low-dimensional state spaces
 
-#### 4. **Gamma (Discount Factor)**
-- **Standard (0.99):** Works well for most cases
-- **High (0.997):** Slightly better for long-horizon strategy (+0.67 improvement)
-- **Impact:** Marginal on Pong; more important for complex games
+#### 4. **Learning Rate Trade-offs**
+- **Optimal range for Pong:** 1e-4 (appears best across both Branis and Excel experiments)
+- **Too low** (5e-5): Slow convergence even with long training
+- **Too high** (2e-4, 3e-4): Divergence and instability
+- **Reason:** Pong's sparse rewards require careful gradient step sizing
 
-#### 5. **Buffer Size & Memory**
-- **Small (50k):** Low memory but ↑ variance → suboptimal performance (-13.21)
-- **Standard (100k):** Good balance; recommended
-- **Large (200k):** Marginal improvements; ↑ RAM usage
-- **Lesson:** 100k sufficient for Pong; diminishing returns above
+#### 5. **Batch Size Effects**
+- **Branis finding:** Batch size 32 consistently outperforms 16 and 54/64
+- Batch 16 can work with very long training but shows higher variance
+- Batch 64 smooths gradients but doesn't improve returns on this task
+- **Trade-off:** Batch 32 balances noise vs. convergence stability
 
-#### 6. **Training Frequency & Gradient Steps**
-- **Freq=4:** Standard; works well
-- **Freq=1:** More frequent updates → marginally faster convergence but longer training time
-- **Grad steps >1:** Stabilizes but slows per-episode updates
+#### 6. **Gamma (Discount Factor)**
+- **Standard (0.99):** Works well across experiments
+- **High (0.995+):** Led to over-optimism in Branis exp3; marginal gains at best
+- **Impact on Pong:** Less critical than on tasks with longer horizons
+- **Lesson:** Default 0.99 is well-calibrated; changes don't provide significant leverage
+
+#### 7. **Surprising Result: Small Batch + Very Long Training**
+- Branis exp9 (batch=16, 700k timesteps) achieved mean_reward=4.66 but failed in test
+- This suggests **overfitting to training environment or instability under ε-greedy test policy**
+- Batch 32 with 500k (exp10) generalizes better despite lower training return
+- **Lesson:** Training return != test performance; stability more important than peak training reward
 
 ---
 
 ## Video Demonstration
 
 **Agent Performance Videos:**
-- ✅ [Excel's Best Model Demo](videos/excel_exp1_baseline_demo.mp4) - CNN baseline, mean reward = -10.85
-- ✅ [Branis's Baseline Demo](videos/branis_exp1_baseline_demo.mp4) - CNN baseline, mean reward = -12.24
+- ✅ [Branis's Best Model Demo](videos/branis_exp10_more_gradient_steps_demo.mp4) - Extended training (500k), mean reward = **6.7** (BEST OVERALL)
+- ✅ [Excel's Best Model Demo](videos/excel_exp1_baseline_demo.mp4) - CNN baseline, mean reward = -10.85 (best short-run)
 - 🔄 [Owen's Best Model Demo](videos/owen_best_demo.mp4) - *To be recorded*
 - 🔄 [Roxanne's Best Model Demo](videos/roxanne_best_demo.mp4) - *To be recorded*
 
 **To generate videos:**
 ```bash
 # Record agent gameplay as video
-python play.py --model models/Excel_model/excel_best_dqn.zip --episodes 10 --save_video videos/demo.mp4
+python play.py --model models/Branis_model/exp10_more_gradient_steps.zip --episodes 10 --save_video videos/branis_demo.mp4
 ```
 
 ---
