@@ -1,6 +1,7 @@
-# Load existing trained model (if present) and verify environment'
+# Load existing trained model (if present) and verify environment
 # pip  install stable_baselines3
 import os, time, sys
+import argparse
 import gymnasium as gym
 import ale_py  
 from stable_baselines3 import DQN
@@ -28,31 +29,80 @@ try:
 except Exception:
     pass
 
-BEST_MODEL_PATH = os.path.join('models', 'Branis_model\\exp10_more_gradient_steps.zip')
+# Parse command-line arguments
+parser = argparse.ArgumentParser(description='Play trained DQN model on Pong-v5')
+parser.add_argument('--model', type=str, default=os.path.join('models', 'Branis_model', 'exp10_more_gradient_steps.zip'),
+                    help='Path to trained model .zip file')
+parser.add_argument('--episodes', type=int, default=1,
+                    help='Number of episodes to play')
+parser.add_argument('--save_video', type=str, default=None,
+                    help='Path to save video file (e.g., videos/demo.mp4)')
+parser.add_argument('--list', action='store_true',
+                    help='List available models and exit')
+parser.add_argument('--seed', type=int, default=42,
+                    help='Random seed for reproducibility')
+
+args = parser.parse_args()
+
+BEST_MODEL_PATH = args.model
 MODEL_TO_PLAY = BEST_MODEL_PATH  
-N_EPISODES = 1
-SEED = 42
+N_EPISODES = args.episodes
+SEED = args.seed
+SAVE_VIDEO = args.save_video
 
 INFERENCE_BUFFER_SIZE = 1_000  
 
 
 def list_models():
-    if os.path.isdir('models'):
-        zips = [f for f in sorted(os.listdir('models')) if f.endswith('.zip')]
-        if not zips:
-            print('No model .zip files found in models/')
-        else:
-            print('Available models:')
-            for f in zips:
-                print(' -', os.path.join('models', f))
+    """Recursively find all .zip model files"""
+    models_found = []
+    for root, dirs, files in os.walk('models'):
+        for file in sorted(files):
+            if file.endswith('.zip'):
+                models_found.append(os.path.join(root, file))
+    
+    if not models_found:
+        print('No model .zip files found in models/')
+    else:
+        print('Available models:')
+        for model_path in models_found:
+            print(' -', model_path)
+    return models_found
+
+if args.list:
+    list_models()
+    sys.exit(0)
 
 if not os.path.isfile(MODEL_TO_PLAY):
     print('Model not found:', MODEL_TO_PLAY)
     list_models()
 else:
     print(f'Loading model: {MODEL_TO_PLAY}')
-    env = make_atari_env(ENV_ID, n_envs=1, seed=SEED, env_kwargs={'render_mode': 'human'})
+    render_mode = 'human' if SAVE_VIDEO is None else 'rgb_array'
+    env = make_atari_env(ENV_ID, n_envs=1, seed=SEED, env_kwargs={'render_mode': render_mode})
     env = VecFrameStack(env, n_stack=4)
+
+    # Wrap with video recorder if saving video
+    if SAVE_VIDEO:
+        os.makedirs(os.path.dirname(SAVE_VIDEO) if os.path.dirname(SAVE_VIDEO) else '.', exist_ok=True)
+        try:
+            from gymnasium.wrappers import RecordVideo
+            # Get the underlying environment to wrap with RecordVideo
+            base_env = env.envs[0]
+            base_env = RecordVideo(base_env, video_folder=os.path.dirname(SAVE_VIDEO) or '.', 
+                                   name_prefix=os.path.basename(SAVE_VIDEO).replace('.mp4', ''),
+                                   episode_trigger=lambda x: True)
+            env.envs[0] = base_env
+            print(f'Video will be saved to: {SAVE_VIDEO}')
+        except ImportError:
+            print('[WARN] RecordVideo not available; attempting to use opencv fallback...')
+            try:
+                import cv2
+                video_writer = None
+                frame_count = 0
+            except ImportError:
+                print('[ERROR] Neither RecordVideo nor opencv available for video saving')
+                SAVE_VIDEO = None
 
     model = None
     try:
@@ -124,6 +174,10 @@ else:
             done = bool(dones[0])
             time.sleep(1/60)  # ~60 FPS pacing
         print(f'Episode {ep+1} return: {ep_reward:.2f}')
+    
     env.close()
+    
+    if SAVE_VIDEO:
+        print(f'Video saved to: {SAVE_VIDEO}')
 
 print('Done.')

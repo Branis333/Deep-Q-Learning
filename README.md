@@ -265,7 +265,7 @@ python play.py --help
 
 **Episode 7 Return: 15.00** (Best performing episode)
 
-[▶️ Watch Branis Demo Video](videos/branis_demo-episode-6.mp4)
+[▶️ Watch Branis Demo Video](videos/branis_demo-episode-12.mp4)
 
 ---
 
@@ -283,7 +283,7 @@ python play.py --help
 
 **Episode 3 Return: 15.00** (Best performing episode)
 
-[▶️ Watch Excel Demo Video](videos/excel_demo-episode-2.mp4)
+[▶️ Watch Excel Demo Video](videos/excel_demo-episode-4.mp4)
 
 ---
 
