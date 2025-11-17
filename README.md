@@ -9,6 +9,8 @@
 
 ---
 
+![Branis Gameplay Demo](videos/branis_demo-episode-12.gif)
+
 ## Overview
 
 This project implements a Deep Q-Network (DQN) agent trained to play the Atari Pong-v5 environment using Stable Baselines3 and Gymnasium. This requires training and comparing multiple DQN configurations with different hyperparameters and policy architectures (CNNPolicy vs MLPPolicy).
@@ -280,45 +282,6 @@ python play.py --help
 | 20 | Excel | exp4_more_gradsteps | -12.48 | 2,000 | 8e-5 | 0.99 | 32 | N/A | Multiple gradient steps: stable but slower |
 | 21 | Excel | exp9_quick_decay | -12.81 | 2,000 | 1e-4 | 0.99 | 32 | N/A | Fast ε-decay forces premature exploitation |
 | 22 | Excel | exp6_small_buffer | -13.21 | 2,000 | 1.2e-4 | 0.99 | 32 | N/A | Small buffer ↑ variance |
-
----
-
-## Video Demonstration
-
-### Branis's Best Model (exp10_more_gradient_steps)
-**Mean Reward: 6.7 (BEST OVERALL)** | Extended training (500k timesteps)
-
-**Episode 7 Return: 15.00** (Best performing episode)
-
-[▶️ Watch Branis Demo Video](https://drive.google.com/file/d/1MsPk1w5dAUm3NkBr0MdBTS0qG_NyGfPe/view)
-
-![Branis Gameplay Demo](videos/branis_demo-episode-12.gif)
-
----
-
-### Owen's Best Model (exp8_multi_gradient_steps)
-**Mean Reward: -6.0 (2nd best)** | Eight gradient steps per update greatly improved efficiency
-
-**Episode 1 Return: 1.00** (Best performing episode)
-
-[▶️ Watch Owen Demo Video](videos/owen_demo-episode-0.mp4)
-
-![Owen Gameplay Demo](videos/owen_demo-episode-0.gif)
-
----
-
-### Excel's Best Model (excel_best_dqn)
-**Mean Reward: -12.24 (3rd best)** | CNN baseline with stability tuning
-
-**Episode 3 Return: 15.00** (Best performing episode)
-
-[▶️ Watch Excel Demo Video](videos/excel_demo-episode-4.mp4)
-
-![Excel Gameplay Demo](videos/excel_demo-episode-4.gif)
----
-
-### Roxanne's Best Model
-*To be recorded*
 
 ---
 
