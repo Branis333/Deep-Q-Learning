@@ -263,36 +263,27 @@ python play.py --help
 ### Branis's Best Model (exp10_more_gradient_steps)
 **Mean Reward: 6.7 (BEST OVERALL)** | Extended training (500k timesteps)
 
-<video width="320" height="240" controls>
-  <source src="videos/branis_demo-episode-6.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
-
 **Episode 7 Return: 15.00** (Best performing episode)
+
+[▶️ Watch Branis Demo Video](videos/branis_demo-episode-6.mp4)
 
 ---
 
 ### Owen's Best Model (exp8_multi_gradient_steps)
 **Mean Reward: -6.0 (2nd best)** | Multi-gradient optimization
 
-<video width="320" height="240" controls>
-  <source src="videos/owen_demo-episode-0.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
-
 **Episode 1 Return: 1.00** (Best performing episode)
+
+[▶️ Watch Owen Demo Video](videos/owen_demo-episode-0.mp4)
 
 ---
 
 ### Excel's Best Model (excel_best_dqn)
 **Mean Reward: -10.85 (3rd best)** | CNN baseline with stability tuning
 
-<video width="320" height="240" controls>
-  <source src="videos/excel_demo-episode-2.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
-
 **Episode 3 Return: 15.00** (Best performing episode)
+
+[▶️ Watch Excel Demo Video](videos/excel_demo-episode-2.mp4)
 
 ---
 
