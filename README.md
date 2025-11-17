@@ -203,11 +203,11 @@ AutoROM --accept-license
 | exp9      | lr=0.00012, gamma=0.99, batch=36, epsilon_start=1.0, epsilon_end=0.01, epsilon_decay=0.05                      | 10 000     | Mean reward equals -21.0. Very aggressive exploration decay forced early exploitation with underdeveloped policy. |
 | exp10     | lr=6e-05, gamma=0.99, batch=36, epsilon_start=1.0, epsilon_end=0.015, epsilon_decay=0.15                       | 10 000     | Mean reward equals -21.0. Very slow learning rate and gradient clipping resulted in almost no progress.            |
 
-**Best Model:** `models/Roxanne_model/roxanne_best_dqn.zip`
+**Best Model:** `models/Roxanne_model/roxanne_exp5_high_gamma.zip` with mean_reward = **-20.00**
 
 **Files:**
-- `notebooks/roxanne.ipynb`: 
-- `logs/Roxanne_training_metrics/roxanne_models.csv`
+- `notebooks/roxanne.ipynb`: Full training pipeline
+- `logs/Roxanne_training_metrics/exp[1-10]_*.csv`: Per-experiment episode-level logs
 
 **Video Demonstration:**
 
