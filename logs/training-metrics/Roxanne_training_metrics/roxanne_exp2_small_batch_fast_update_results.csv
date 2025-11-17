@@ -1,0 +1,2 @@
+name,mean_reward,std_reward,train_minutes,learning_rate,gamma,batch_size,buffer_size,train_freq,gradient_steps,target_update_interval,exploration_fraction,exploration_initial_eps,exploration_final_eps,verbose,model_path
+roxanne_exp2_small_batch_fast_update,-20.0,1.4142135623730951,6.320113237698873,0.00015,0.97,24,130000,2,1,7000,0.2,1.0,0.03,0,models/roxanne_exp2_small_batch_fast_update.zip

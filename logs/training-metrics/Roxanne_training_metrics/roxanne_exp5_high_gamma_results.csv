@@ -1,0 +1,2 @@
+name,mean_reward,std_reward,train_minutes,learning_rate,gamma,batch_size,buffer_size,train_freq,gradient_steps,target_update_interval,exploration_fraction,exploration_initial_eps,exploration_final_eps,verbose,model_path
+roxanne_exp5_high_gamma,-20.333333333333332,0.4714045207910317,15.049025638898213,0.0001,0.999,40,140000,6,2,15000,0.1,1.0,0.015,0,models/roxanne_exp5_high_gamma.zip

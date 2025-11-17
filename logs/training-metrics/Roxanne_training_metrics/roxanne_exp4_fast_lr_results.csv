@@ -1,0 +1,2 @@
+name,mean_reward,std_reward,train_minutes,learning_rate,gamma,batch_size,buffer_size,train_freq,gradient_steps,target_update_interval,exploration_fraction,exploration_initial_eps,exploration_final_eps,verbose,model_path
+roxanne_exp4_fast_lr,-21.0,0.0,9.207068216800689,0.0003,0.96,48,110000,5,1,8500,0.12,1.0,0.02,0,models/roxanne_exp4_fast_lr.zip

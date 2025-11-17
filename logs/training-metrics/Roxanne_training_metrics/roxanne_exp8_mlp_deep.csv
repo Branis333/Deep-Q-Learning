@@ -1,0 +1,2 @@
+name,mean_reward,std_reward,train_minutes,learning_rate,gamma,batch_size,buffer_size,train_freq,gradient_steps,target_update_interval,exploration_fraction,exploration_initial_eps,exploration_final_eps,verbose,policy_kwargs,model_path,max_grad_norm
+roxanne_exp8_mlp_deep,-21.0,0.0,1.3562119404474895,0.0004,0.98,64,170000,5,3,10000,0.22,1.0,0.02,0,"{'net_arch': [384, 384]}",models/roxanne_exp8_mlp_deep.zip,

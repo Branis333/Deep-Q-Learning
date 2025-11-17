@@ -1,0 +1,2 @@
+name,mean_reward,std_reward,train_minutes,learning_rate,gamma,batch_size,buffer_size,train_freq,gradient_steps,target_update_interval,exploration_fraction,exploration_initial_eps,exploration_final_eps,verbose,policy_kwargs,model_path,max_grad_norm
+roxanne_exp9_aggressive_decay,-21.0,0.0,1.2330653309822082,0.00012,0.99,36,130000,4,2,8000,0.05,1.0,0.01,0,,models/roxanne_exp9_aggressive_decay.zip,
