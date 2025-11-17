@@ -309,27 +309,3 @@ python play.py --model models/Owen_model/exp8_multi_gradient_steps_best.zip --ep
 python play.py --model models/Excel_model/excel_best_dqn.zip --episodes 10 --save_video videos/excel_demo.mp4
 ```
 ---
-
-## Challenges & Lessons Learned
-
-### 1. Memory Management
-- **Issue:** Large replay buffers (200k+) consume >4GB RAM
-- **Solution:** Use `buffer_size=100k` and `optimize_memory_usage=False` for inference
-- **Lesson:** Trade-off between sample efficiency and computational resources
-
-### 2. Numpy Compatibility
-- **Issue:** Older trained models reference deprecated numpy modules (`numpy._core.numeric`)
-- **Solution:** Patch sys.modules in play.py; load parameters separately if needed
-- **Lesson:** Model compatibility across library versions is important
-
-### 3. Sparse Rewards
-- **Issue:** Pong provides -1 per step; only +1 on score (rare event)
-- **Solution:** Careful exploration schedule essential; CNN policy helps extract features
-- **Lesson:** Reward shaping or curriculum learning needed for very sparse environments
-
-### 4. Policy Architecture Selection
-- **Issue:** Chose MLPPolicy without considering image input dimensionality
-- **Solution:** Use CNN for image inputs; MLP for low-dim state spaces
-- **Lesson:** Architecture choice critically impacts sample efficiency
-
----
