@@ -102,6 +102,17 @@ AutoROM --accept-license
 
 ---
 
+**Video Demonstration**
+
+**Mean Reward: 6.7 (BEST OVERALL)** | Extended training (500k timesteps)
+
+**Episode 7 Return: 15.00** (Best performing episode)
+
+[▶️ Watch Branis Demo Video](https://drive.google.com/file/d/1MsPk1w5dAUm3NkBr0MdBTS0qG_NyGfPe/view)
+
+![Branis Gameplay Demo](videos/branis_demo-episode-12.gif)
+---
+
 ### 2. Excel Asaph 
 
 **Experiments (10 configurations):**
@@ -119,7 +130,7 @@ AutoROM --accept-license
 | exp9 | lr=0.0001, gamma=0.99, batch=32, epsilon_start=1.0, epsilon_end=0.01, epsilon_decay=0.03 | 500,000 | Very fast exploration decay forced premature exploitation | -12.81 |
 | exp10 | lr=5e-05, gamma=0.99, batch=32, epsilon_start=1.0, epsilon_end=0.01, epsilon_decay=0.12 | 500,000 | Conservative low learning rate with gradient clipping provided marginal benefit; insufficient training steps hindered performance | -13.28 |
 
-**Best Model:** `excel_exp1_baseline` (saved as `models/Excel_model/excel_best_dqn.zip`)
+**Best Model:** `excel_exp1_baseline` (saved as `models/Excel_model/excel_best_dqn.zip`) with mean_reward = **-12.24**
 
 **Files:**
 - `notebooks/excel1.ipynb`: Local training experiments (Windows)
