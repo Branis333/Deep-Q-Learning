@@ -94,11 +94,19 @@ AutoROM --accept-license
 | exp9 | lr=1e-4, gamma=0.99, batch=16, epsilon_start=1.0, epsilon_end=0.01, epsilon_decay=0.12 | 700,000 | Small batch size with long training time yielded strong positive reward. And yet it failed in the test | 4.66 |
 | exp10 | lr=1e-4, gamma=0.99, batch=32, epsilon_start=1.0, epsilon_end=0.01, epsilon_decay=0.1 | 500,000 | More gradient updates helped the model reach a positive reward | **6.7** |
 
-**Best Model:** `exp10_more_gradient_steps` (saved as `models/Branis_model/exp10_more_gradient_steps.zip`) with mean_reward = **6.7**
+**Best Model:** `exp10_more_gradient_steps` (saved as `models/Branis_model/exp10_more_gradient_steps.zip`) with mean_reward = **6.7 (BEST OVERALL)**
 
 **Files:**
 - `notebooks/branis.ipynb`: Full training pipeline with callbacks and visualization
 - `logs/branis_models.csv`: Summary results table
+
+**Video Demonstration:**
+
+**Episode 7 Return: 15.00** (Best performing episode)
+
+[▶️ Watch Branis Demo Video](https://drive.google.com/file/d/1MsPk1w5dAUm3NkBr0MdBTS0qG_NyGfPe/view)
+
+![Branis Gameplay Demo](videos/branis_demo-episode-12.gif)
 
 ---
 
@@ -119,13 +127,21 @@ AutoROM --accept-license
 | exp9 | lr=0.0001, gamma=0.99, batch=32, epsilon_start=1.0, epsilon_end=0.01, epsilon_decay=0.03 | 500,000 | Very fast exploration decay forced premature exploitation | -12.81 |
 | exp10 | lr=5e-05, gamma=0.99, batch=32, epsilon_start=1.0, epsilon_end=0.01, epsilon_decay=0.12 | 500,000 | Conservative low learning rate with gradient clipping provided marginal benefit; insufficient training steps hindered performance | -13.28 |
 
-**Best Model:** `excel_exp1_baseline` (saved as `models/Excel_model/excel_best_dqn.zip`)
+**Best Model:** `excel_exp1_baseline` (saved as `models/Excel_model/excel_best_dqn.zip`) with mean_reward = **-12.24**
 
 **Files:**
 - `notebooks/excel1.ipynb`: Local training experiments (Windows)
 - `notebooks/excel2.ipynb`: Google Colab extended training (1.5M timesteps)
 - `logs/training-metrics/Excel_training_metrics/excel_models.csv`: Results summary
 - `logs/training-metrics/Excel_training_metrics/training_metrics_excel_exp[1-10].csv`: Per-experiment logs
+
+**Video Demonstration:**
+
+**Episode 3 Return: 15.00** (Best performing episode)
+
+[▶️ Watch Excel Demo Video](videos/excel_demo-episode-4.mp4)
+
+![Excel Gameplay Demo](videos/excel_demo-episode-4.gif)
 
 ---
 
@@ -153,6 +169,14 @@ AutoROM --accept-license
 - `logs/Owen_training_metrics/owen_models.csv`: Summary results table
 - `logs/Owen_training_metrics/exp[1-10]_*.csv`: Per-experiment episode-level logs
 
+<!-- **Video Demonstration:**
+
+**Episode 1 Return: 1.00** (Best performing episode)
+
+[▶️ Watch Owen Demo Video](videos/owen_demo-episode-0.mp4)
+
+![Owen Gameplay Demo](videos/owen_demo-episode-0.gif) -->
+
 ---
 
 ### 4. Roxanne Niteka 
@@ -177,6 +201,14 @@ AutoROM --accept-license
 **Files:**
 - `notebooks/roxanne.ipynb`: 
 - `logs/Roxanne_training_metrics/roxanne_models.csv`
+
+**Video Demonstration:**
+
+**Episode 3 Return: 15.00** (Best performing episode)
+
+[▶️ Watch Excel Demo Video](videos/excel_demo-episode-4.mp4)
+
+![Excel Gameplay Demo](videos/excel_demo-episode-4.gif)
 
 ---
 
@@ -219,13 +251,6 @@ python play.py --list
 # Display help
 python play.py --help
 ```
-
-**Command-line Arguments:**
-- `--model PATH`: Path to trained model .zip file (default: `models/Branis_model/exp10_more_gradient_steps.zip`)
-- `--episodes N`: Number of episodes to play (default: 1)
-- `--save_video PATH`: Path to save video file (e.g., `videos/demo.mp4`); if not specified, renders to screen
-- `--list`: List all available model files and exit
-- `--seed N`: Random seed for reproducibility (default: 42)
 
 **Output:**
 - Real-time Pong gameplay visualization (when not saving video)
@@ -279,7 +304,7 @@ python play.py --help
 ---
 
 ### Owen's Best Model (exp8_multi_gradient_steps)
-**Mean Reward: -6.0 (3rd best)** | Eight gradient steps per update greatly improved efficiency
+**Mean Reward: -6.0 (2nd best)** | Eight gradient steps per update greatly improved efficiency
 
 **Episode 1 Return: 1.00** (Best performing episode)
 
