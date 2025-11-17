@@ -24,7 +24,7 @@ This project implements a Deep Q-Network (DQN) agent trained to play the Atari P
 ```
 Deep-Q-Learning/
 ├── README.md                          
-├── requirements.txt                   # Python dependencies
+├── requirements.txt                   
 ├── train.py                           # Training script
 ├── play.py                            # Inference/gameplay script
 ├── notebooks/
@@ -77,9 +77,7 @@ AutoROM --accept-license
 
 ## Group Member Contributions
 
-### 1. Branis Sumba - Hyperparameter Tuning & Epsilon Decay Analysis
-
-**Role:** Investigated epsilon decay schedules and their impact on exploration-exploitation trade-off; discovered that extended training with faster epsilon decay yields superior performance.
+### 1. Branis Sumba
 
 **Experiments (10 configurations):**
 
@@ -96,14 +94,6 @@ AutoROM --accept-license
 | 9 | Small Batch Extended | 1e-4 | 0.99 | 16 | 0.12 | 700,000 | 4.66 | Small batch + very long training → positive reward (but unstable in test) |
 | 10 | More Gradient Steps Extended | 1e-4 | 0.99 | 32 | 0.10 | 500,000 | **6.7** | ✓ BEST: Gradient accumulation + extended training → strong positive reward |
 
-**Key Findings:**
-- **Extended training (500k+ timesteps) dramatically outperforms short runs** (50k steps): +17 reward improvement
-- **Epsilon decay schedule matters more than traditional hyperparameters** (LR, gamma, batch)
-- **Fast epsilon decay (0.05)** with long training yields best performance (mean_reward = 6.7)
-- Batch size 32 consistently outperforms smaller (16) and larger (54, 64) configurations
-- Very long training (700k) with small batch shows instability despite high training return
-- Multiple gradient steps improve stability without sacrificing convergence speed
-
 **Best Model:** `exp10_more_gradient_steps` (saved as `models/Branis_model/exp10_more_gradient_steps.zip`) with mean_reward = **6.7**
 
 **Files:**
@@ -112,9 +102,7 @@ AutoROM --accept-license
 
 ---
 
-### 2. Excel Asaph - CNN vs MLP Policy Comparison
-
-**Role:** Conducted systematic policy architecture comparison and hyperparameter refinement.
+### 2. Excel Asaph 
 
 **Experiments (10 configurations):**
 
@@ -131,14 +119,6 @@ AutoROM --accept-license
 | 9 | Quick Decay | CNN | 1e-4 | 0.99 | 32 | 120k | 4 | 1 | 8k | Fast ε-decay forces exploitation too early; mean_reward = -12.81 |
 | 10 | Slow LR + Clip | CNN | 5e-5 | 0.99 | 32 | 150k | 4 | 1 | 8k | Conservative approach with gradient clipping; mean_reward = -11.28 |
 
-**Key Findings:**
-- **CNN significantly outperforms MLP** (~2-4 point advantage in mean reward)
-- CNN's convolutional layers efficiently extract spatial features from images
-- MLP policies struggle to process high-dimensional image inputs effectively
-- Baseline configuration performs best overall (mean_reward = **-10.85**)
-- High gamma and conservative learning rates improve stability
-- Small buffers and aggressive target updates increase variance
-
 **Best Model:** `excel_exp1_baseline` (saved as `models/Excel_model/excel_best_dqn.zip`)
 
 **Files:**
@@ -149,9 +129,7 @@ AutoROM --accept-license
 
 ---
 
-### 3. Ganza Owen Yhaan - Gradient Step Optimization & Exploration Strategy
-
-**Role:** Investigated the impact of multiple gradient steps per update and various exploration strategies; discovered that multi-step gradient accumulation yields superior stability and performance.
+### 3. Ganza Owen Yhaan 
 
 **Experiments (10 configurations):**
 
@@ -168,15 +146,6 @@ AutoROM --accept-license
 | 9 | Fast Target High Gamma | 1e-4 | 0.997 | 32 | 120k | 4 | 1 | 3k | -21.00 | Very fast target updates destabilize learning; high gamma |
 | 10 | Fast Adaptation | 4e-4 | 0.98 | 32 | 50k | 4 | 1 | 5k | -21.00 | Aggressive learning rate with small buffer; high variance |
 
-**Key Findings:**
-- **Multiple gradient steps (8 per update) significantly improve performance:** Mean reward -6.0 vs -20.67 baseline (+14.67 improvement)
-- **Gradient step accumulation enables deeper policy optimization** without increasing exploration overhead
-- **Optimal gradient steps trade-off:** 8 steps balances convergence speed with computational cost
-- Learning rate 1e-4 remains optimal; higher rates (2e-4, 4e-4) increase instability
-- Lower gamma (0.97) enables faster exploitation but misses long-term strategies
-- Very large buffers (250k) with slow learning can be suboptimal due to stale samples
-- Training frequency of 1 (every step) causes instability; frequency of 4 balances learning
-
 **Best Model:** `exp8_multi_gradient_steps` (saved as `models/Owen_model/exp8_multi_gradient_steps_best.zip`) with mean_reward = **-6.00**
 
 **Files:**
@@ -186,9 +155,7 @@ AutoROM --accept-license
 
 ---
 
-### 4. Roxanne Niteka - [Placeholder for Roxanne's Contribution]
-
-**Role:** [To be filled - Roxanne's experiment focus and methodology]
+### 4. Roxanne Niteka 
 
 **Experiments (10 configurations):**
 
@@ -197,9 +164,6 @@ AutoROM --accept-license
 | 1 | [Exp Name] | [CNN/MLP] | [Value] | [Value] | [Value] | [Value] | [Value] | [Value] | [Value] | [To be documented] |
 | 2 | [Exp Name] | [CNN/MLP] | [Value] | [Value] | [Value] | [Value] | [Value] | [Value] | [Value] | [To be documented] |
 | 3-10 | ... | ... | ... | ... | ... | ... | ... | ... | ... | [To be documented] |
-
-**Key Findings:**
-- [To be filled]
 
 **Best Model:** `models/Roxanne_model/roxanne_best_dqn.zip`
 
@@ -214,20 +178,12 @@ AutoROM --accept-license
 ### train.py Usage
 
 ```bash
-# Train with default settings (Branis baseline)
+# Train with default settings
 python train.py
 
 # Train with custom hyperparameters (example)
 python train.py --learning_rate 1e-4 --gamma 0.99 --batch_size 32 --buffer_size 100000
 ```
-
-**train.py Features:**
-- Supports both CNNPolicy and MLPPolicy architectures
-- Logs training metrics to CSV (timestep, episode_length, episode_reward)
-- Saves per-experiment models: `models/dqn_{exp_name}.zip`
-- Tracks best model: `models/{group_member}_model/best_dqn.zip`
-- Generates TensorBoard logs for visualization: `logs/tensorboard/{exp_name}/`
-- Automatic callback system for monitoring and early stopping
 
 **Output Files:**
 - `models/dqn_exp_{n}.zip`: Individual experiment models
@@ -241,23 +197,15 @@ python train.py --learning_rate 1e-4 --gamma 0.99 --batch_size 32 --buffer_size 
 ### play.py Usage
 
 ```bash
-# Play with best model (Excel's baseline)
+# Play with best model (Branis's baseline)
 python play.py
 
 # Play specific experiment model
-python play.py --model models/Excel_model/excel_best_dqn.zip --episodes 5
+python play.py --model models/Branis_model/exp10_more_gradient_steps.zip --episodes 5
 
 # Display available models
 python play.py --list
 ```
-
-**play.py Features:**
-- Loads trained DQN models with GreedyQPolicy for deterministic play
-- Renders game environment in real-time
-- Handles memory-efficient inference with reduced replay buffer
-- Robust error handling for numpy compatibility issues
-- Episode reward tracking and display
-- ~60 FPS gameplay pacing
 
 **Output:**
 - Real-time Pong gameplay visualization
@@ -294,66 +242,15 @@ python play.py --list
 | 21 | Owen | exp4_fast_target_high_gamma | -21.00 | 20 min | 1e-4 | 0.997 | 32 | 1 | Very fast target updates destabilize |
 | 22 | Owen | exp2_fast_adaptation | -21.00 | 9 min | 4e-4 | 0.98 | 32 | 1 | Aggressive learning rate high variance |
 
-### Key Insights
-
-#### 1. **Multi-Step Gradient Updates Significantly Boost Performance**
-- **Owen's critical finding:** Using 8 gradient steps per update improved mean reward by **14.67 points** (from -20.67 to -6.00)
-- This demonstrates that deeper policy optimization per timestep can outweigh increased exploration
-- **Trade-off:** Gradient steps increase computational cost but reduce wall-clock training time by enabling faster convergence
-- **Implication:** For Pong, gradient accumulation is more effective than simply extending training duration (compare to Branis's extended timesteps)
-- **Recommendation:** Try 4-8 gradient steps for sparse-reward environments
-
-#### 2. **Training Duration Dramatically Outweighs Most Hyperparameters**
-- **Branis's finding:** Extending training from 50k to 500k timesteps improved mean reward by **~27 points** (from -20.33 to 6.7)
-- This vastly outpaces any improvement from tuning learning rate, gamma, or batch size
-- **Combined insight:** Branis (extended timesteps) + Owen (multi-step gradients) both beat Excel's short-run CNN approach
-- **Lesson:** Both exploration time AND depth of policy updates matter critically
-
-#### 3. **Epsilon Decay Schedule is Critical**
-- Standard epsilon decay (0.10) keeps agent in exploration too long on short runs
-- Faster epsilon decay (0.05) with extended training allows proper transition to exploitation
-- Very aggressive decay (0.20) doesn't help; moderate decay with long training is optimal
-- **Key trade-off:** Must balance exploration duration with training timesteps
-
-#### 3. **Policy Architecture: CNN Advantages for Image Tasks**
-- CNN-based policies in Excel's experiments **outperform MLPs by 2-4 points** when properly trained
-- However, Branis's extended training shows even raw DQN can reach positive rewards
-- CNNs extract spatial features efficiently; MLPs waste capacity on image flattening
-- **Recommendation:** Use CNN for visual Pong; MLP for low-dimensional state spaces
-
-#### 4. **Learning Rate Trade-offs**
-- **Optimal range for Pong:** 1e-4 (appears best across both Branis and Excel experiments)
-- **Too low** (5e-5): Slow convergence even with long training
-- **Too high** (2e-4, 3e-4): Divergence and instability
-- **Reason:** Pong's sparse rewards require careful gradient step sizing
-
-#### 5. **Batch Size Effects**
-- **Branis finding:** Batch size 32 consistently outperforms 16 and 54/64
-- Batch 16 can work with very long training but shows higher variance
-- Batch 64 smooths gradients but doesn't improve returns on this task
-- **Trade-off:** Batch 32 balances noise vs. convergence stability
-
-#### 6. **Gamma (Discount Factor)**
-- **Standard (0.99):** Works well across experiments
-- **High (0.995+):** Led to over-optimism in Branis exp3; marginal gains at best
-- **Impact on Pong:** Less critical than on tasks with longer horizons
-- **Lesson:** Default 0.99 is well-calibrated; changes don't provide significant leverage
-
-#### 7. **Surprising Result: Small Batch + Very Long Training**
-- Branis exp9 (batch=16, 700k timesteps) achieved mean_reward=4.66 but failed in test
-- This suggests **overfitting to training environment or instability under ε-greedy test policy**
-- Batch 32 with 500k (exp10) generalizes better despite lower training return
-- **Lesson:** Training return != test performance; stability more important than peak training reward
-
 ---
 
 ## Video Demonstration
 
 **Agent Performance Videos:**
-- ✅ [Branis's Best Model Demo](https://drive.google.com/file/d/1MsPk1w5dAUm3NkBr0MdBTS0qG_NyGfPe/view?usp=sharing) - Extended training (500k), mean reward = **6.7** (BEST OVERALL)
-- ✅ [Owen's Best Model Demo](videos/owen_exp8_multi_gradient_steps_demo.mp4) - Multi-gradient optimization, mean reward = **-6.0** (2nd best)
-- ✅ [Excel's Best Model Demo](videos/excel_exp1_baseline_demo.mp4) - CNN baseline, mean reward = -10.85 (3rd best)
-- 🔄 [Roxanne's Best Model Demo](videos/roxanne_best_demo.mp4) - *To be recorded*
+- [Branis's Best Model Demo](https://drive.google.com/file/d/1MsPk1w5dAUm3NkBr0MdBTS0qG_NyGfPe/view?usp=sharing) - Extended training (500k), mean reward = **6.7** (BEST OVERALL)
+- [Owen's Best Model Demo](videos/owen_exp8_multi_gradient_steps_demo.mp4) - Multi-gradient optimization, mean reward = **-6.0** (2nd best)
+- [Excel's Best Model Demo](videos/excel_exp1_baseline_demo.mp4) - CNN baseline, mean reward = -10.85 (3rd best)
+- [Roxanne's Best Model Demo](videos/roxanne_best_demo.mp4) - *To be recorded*
 
 **To generate videos:**
 ```bash
@@ -363,95 +260,6 @@ python play.py --model models/Owen_model/exp8_multi_gradient_steps_best.zip --ep
 # Record Branis's agent gameplay
 python play.py --model models/Branis_model/exp10_more_gradient_steps.zip --episodes 10 --save_video videos/branis_demo.mp4
 ```
-
----
-
-## Understanding DQN & RL Concepts
-
-### Deep Q-Learning Algorithm Overview
-
-**Core Idea:** Learn a Q-function Q(s,a) that estimates expected future rewards from state *s* taking action *a*, using a neural network.
-
-**Key Components:**
-
-1. **Experience Replay:** Store (state, action, reward, next_state) tuples in a buffer; sample randomly to break temporal correlation
-2. **Target Network:** Use separate network to compute target values, updated less frequently to stabilize learning
-3. **ε-Greedy Exploration:** Trade-off between exploration (random actions) and exploitation (greedy best actions)
-4. **Loss Function:** Minimize MSE between predicted Q-values and Bellman targets
-
-$$L = \frac{1}{|B|} \sum_{(s,a,r,s') \in B} \left[ Q(s,a) - (r + \gamma \max_{a'} Q_{target}(s', a')) \right]^2$$
-
-### Exploration vs. Exploitation
-
-- **Exploration:** Random actions to discover environment dynamics
-- **Exploitation:** Greedy actions maximizing learned Q-values
-- **ε-Decay Schedule:** Start with high ε (exploration); decay to low ε (exploitation)
-- **Pong Challenge:** Sparse rewards require good exploration strategy
-
-### Hyperparameter Roles
-
-| Hyperparameter | Role | Impact |
-|---|---|---|
-| **Learning Rate (α)** | Step size in gradient descent | Too high → divergence; too low → slow convergence |
-| **Gamma (γ)** | Discount factor; weight on future rewards | High → long-term planning; low → myopic (immediate rewards) |
-| **Batch Size** | # samples per gradient update | Small → noisy; large → stable but fewer updates |
-| **Buffer Size** | # experiences stored | Small → correlation; large → memory overhead |
-| **Train Frequency** | Steps between gradient updates | Low → slow learning; high → instability |
-| **Epsilon Schedule** | Exploration decay rate | Fast → premature exploitation; slow → wasted exploration |
-| **Target Update Interval** | Steps between target net updates | Small → divergence; large → slow moving target |
-
-### Reward Structure (Pong-v5)
-
-- **+1:** Agent scores a goal
-- **-1:** Agent loses a goal (or each step taken)
-- **Sparse reward:** Makes learning difficult; requires effective exploration
-
----
-
-## Usage Instructions
-
-### 1. Install Dependencies
-```bash
-pip install -r requirements.txt
-AutoROM --accept-license  # Download Atari ROMs
-```
-
-### 2. Train Models
-```bash
-# Train all experiments
-python train.py
-
-# Or train specific configuration
-python train.py --name excel_exp1_baseline --lr 1e-4 --gamma 0.99 --batch_size 32
-```
-
-### 3. Play with Trained Agent
-```bash
-# Use best model
-python play.py
-
-# Specify custom model
-python play.py --model models/Excel_model/excel_best_dqn.zip --episodes 5
-
-# List available models
-python play.py --list
-```
-
-### 4. Analyze Results
-```python
-import pandas as pd
-
-# Load results
-results = pd.read_csv('logs/excel_models.csv')
-print(results.sort_values('mean_reward', ascending=False))
-
-# Visualize training curves
-import matplotlib.pyplot as plt
-metrics = pd.read_csv('logs/training_metrics_excel_exp1_baseline.csv')
-plt.plot(metrics['timestep'], metrics['ep_reward'].rolling(10).mean())
-plt.show()
-```
-
 ---
 
 ## Challenges & Lessons Learned
@@ -478,68 +286,6 @@ plt.show()
 
 ---
 
-## File Manifest
-
-| File | Purpose | Owner |
-|------|---------|-------|
-| `train.py` | Training script; runs all experiments | Branis (with Excel enhancements) |
-| `play.py` | Inference script; plays trained models | Branis (with Excel debugging) |
-| `requirements.txt` | Python dependencies | Branis |
-| `notebooks/branis.ipynb` | Branis's 10 experiments | Branis |
-| `notebooks/excel1.ipynb` | Excel's local experiments | Excel |
-| `notebooks/excel2.ipynb` | Excel's Colab experiments | Excel |
-| `notebooks/owen.ipynb` | Owen's gradient step experiments | Owen |
-| `notebooks/roxanne.ipynb` | Roxanne's experiments [TBD] | Roxanne |
-| `logs/branis_models.csv` | Branis's results summary | Branis |
-| `logs/Excel_training_metrics/excel_models.csv` | Excel's results summary | Excel |
-| `logs/Owen_training_metrics/owen_models.csv` | Owen's results summary | Owen |
-| `logs/Roxanne_training_metrics/roxanne_models.csv` | Roxanne's results [TBD] | Roxanne |
-| `models/Branis_model/exp10_more_gradient_steps.zip` | Branis's best model (6.7 reward) | Branis |
-| `models/Excel_model/excel_best_dqn.zip` | Excel's best model (-10.85 reward) | Excel |
-| `models/Owen_model/exp8_multi_gradient_steps_best.zip` | Owen's best model (-6.0 reward) | Owen |
-| `models/Roxanne_model/roxanne_best_dqn.zip` | Roxanne's best model [TBD] | Roxanne |
-
----
-
-## Group Collaboration Notes
-
-**Division of Work:**
-- **Branis:** Project setup, train.py/play.py scripting, baseline experiments, pipeline architecture
-- **Excel:** Hyperparameter refinement, CNN vs MLP comparison, Colab setup, 10 diverse experiments
-- **Owen:** [To document]
-- **Roxanne:** [To document]
-
-**Key Meetings:**
-- Week 4: Initial setup and environment configuration ✓
-- Week 5: Hyperparameter tuning and experimentation ✓
-- Week 6: Coach consultation slot [To be booked]
-- Final: Results compilation and README documentation [In progress]
-
----
-
-## References
-
-1. [Stable Baselines3 Documentation](https://stable-baselines3.readthedocs.io/)
-2. [Gymnasium Atari Docs](https://gymnasium.farama.org/environments/atari/)
-3. [Human-level control through deep reinforcement learning (DQN paper)](https://www.nature.com/articles/nature14236)
-4. [Deep Reinforcement Learning Hands-On (Lapan, 2020)](https://github.com/PacktPublishing/Deep-Reinforcement-Learning-Hands-On)
-
----
-
-## Submission Checklist
-
-- ✅ train.py script (functional, accepts hyperparameter arguments)
-- ✅ play.py script (loads models, renders gameplay, uses GreedyQPolicy)
-- ✅ 10 distinct hyperparameter experiments per member (40 total)
-- ✅ Hyperparameter documentation table (above)
-- ✅ README with analysis and insights
-- ✅ Trained model files (.zip) for each best experiment
-- ✅ GitHub repository with all files
-- 🔄 Video demonstration of agent gameplay (pending Owen & Roxanne)
-- 🔄 Coach consultation slot booking (Week 6)
-
----
-
 ## How to Run the Full Pipeline
 
 ```bash
@@ -561,6 +307,3 @@ python -c "import pandas as pd; print(pd.read_csv('logs/excel_models.csv').sort_
 
 ---
 
-**Last Updated:** November 17, 2025  
-**Status:** Ready for Submission (Attempt 1)  
-**Next Steps:** Record demo videos (Owen & Roxanne); book coach consultation slot
