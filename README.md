@@ -267,6 +267,8 @@ python play.py --help
 
 [▶️ Watch Branis Demo Video](https://drive.google.com/file/d/1MsPk1w5dAUm3NkBr0MdBTS0qG_NyGfPe/view)
 
+![Branis Gameplay Demo](videos/branis_demo-episode-12.gif)
+
 ---
 
 ### Owen's Best Model (exp8_multi_gradient_steps)
@@ -275,6 +277,8 @@ python play.py --help
 **Episode 1 Return: 1.00** (Best performing episode)
 
 [▶️ Watch Owen Demo Video](videos/owen_demo-episode-0.mp4)
+
+![Owen Gameplay Demo](videos/owen_demo-episode-0.gif)
 
 ---
 
@@ -285,6 +289,7 @@ python play.py --help
 
 [▶️ Watch Excel Demo Video](videos/excel_demo-episode-4.mp4)
 
+![Pong Gameplay Demo](videos/excel_demo-episode-4.gif)
 ---
 
 ### Roxanne's Best Model
