@@ -197,19 +197,33 @@ python train.py --learning_rate 1e-4 --gamma 0.99 --batch_size 32 --buffer_size 
 ### play.py Usage
 
 ```bash
-# Play with best model (Branis's baseline)
+# Play with best model (Branis's baseline) with real-time rendering
 python play.py
 
-# Play specific experiment model
+# Play specific experiment model for multiple episodes
 python play.py --model models/Branis_model/exp10_more_gradient_steps.zip --episodes 5
+
+# Save gameplay as video file
+python play.py --model models/Owen_model/exp8_multi_gradient_steps_best.zip --episodes 10 --save_video videos/owen_demo.mp4
 
 # Display available models
 python play.py --list
+
+# Display help
+python play.py --help
 ```
 
+**Command-line Arguments:**
+- `--model PATH`: Path to trained model .zip file (default: `models/Branis_model/exp10_more_gradient_steps.zip`)
+- `--episodes N`: Number of episodes to play (default: 1)
+- `--save_video PATH`: Path to save video file (e.g., `videos/demo.mp4`); if not specified, renders to screen
+- `--list`: List all available model files and exit
+- `--seed N`: Random seed for reproducibility (default: 42)
+
 **Output:**
-- Real-time Pong gameplay visualization
-- Episode return (total discounted reward) printed to console
+- Real-time Pong gameplay visualization (when not saving video)
+- Episode return (total discounted reward) printed to console for each episode
+- Video file saved to specified location (when `--save_video` is provided)
 
 ---
 
@@ -246,19 +260,57 @@ python play.py --list
 
 ## Video Demonstration
 
-**Agent Performance Videos:**
-- [Branis's Best Model Demo](https://drive.google.com/file/d/1MsPk1w5dAUm3NkBr0MdBTS0qG_NyGfPe/view?usp=sharing) - Extended training (500k), mean reward = **6.7** (BEST OVERALL)
-- [Owen's Best Model Demo](videos/owen_exp8_multi_gradient_steps_demo.mp4) - Multi-gradient optimization, mean reward = **-6.0** (2nd best)
-- [Excel's Best Model Demo](videos/excel_exp1_baseline_demo.mp4) - CNN baseline, mean reward = -10.85 (3rd best)
-- [Roxanne's Best Model Demo](videos/roxanne_best_demo.mp4) - *To be recorded*
+### Branis's Best Model (exp10_more_gradient_steps)
+**Mean Reward: 6.7 (BEST OVERALL)** | Extended training (500k timesteps)
+
+<video width="320" height="240" controls>
+  <source src="videos/branis_demo-episode-6.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+**Episode 7 Return: 15.00** (Best performing episode)
+
+---
+
+### Owen's Best Model (exp8_multi_gradient_steps)
+**Mean Reward: -6.0 (2nd best)** | Multi-gradient optimization
+
+<video width="320" height="240" controls>
+  <source src="videos/owen_demo-episode-0.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+**Episode 1 Return: 1.00** (Best performing episode)
+
+---
+
+### Excel's Best Model (excel_best_dqn)
+**Mean Reward: -10.85 (3rd best)** | CNN baseline with stability tuning
+
+<video width="320" height="240" controls>
+  <source src="videos/excel_demo-episode-2.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+**Episode 3 Return: 15.00** (Best performing episode)
+
+---
+
+### Roxanne's Best Model
+*To be recorded*
+
+---
 
 **To generate videos:**
 ```bash
-# Record Owen's agent gameplay
+# Record Branis's best model
+python play.py --model models/Branis_model/exp10_more_gradient_steps.zip --episodes 10 --save_video videos/branis_demo.mp4
+
+# Record Owen's best model
 python play.py --model models/Owen_model/exp8_multi_gradient_steps_best.zip --episodes 10 --save_video videos/owen_demo.mp4
 
-# Record Branis's agent gameplay
-python play.py --model models/Branis_model/exp10_more_gradient_steps.zip --episodes 10 --save_video videos/branis_demo.mp4
+# Record Excel's best model
+python play.py --model models/Excel_model/excel_best_dqn.zip --episodes 10 --save_video videos/excel_demo.mp4
 ```
 ---
 
