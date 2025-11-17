@@ -108,16 +108,16 @@ AutoROM --accept-license
 
 | # | Configuration | Policy | Learning Rate | Gamma | Batch Size | Buffer Size | Train Freq | Gradient Steps | Target Update | Noted Behavior |
 |---|---------------|--------|---------------|-------|------------|-------------|------------|----------------|----------------|---|
-| 1 | Baseline | CNN | 1e-4 | 0.99 | 32 | 100k | 4 | 1 | 10k | Stable baseline; mean_reward = **-10.85** ✓ BEST |
+| 1 | Baseline | CNN | 1e-4 | 0.99 | 32 | 100k | 4 | 1 | 10k | Stable baseline; mean_reward = **-12.24** ✓ BEST |
 | 2 | Large Batch | CNN | 7e-5 | 0.99 | 64 | 200k | 4 | 1 | 8k | Large batch improves stability; mean_reward = -12.38 |
-| 3 | Freq1 Small Batch | CNN | 1e-4 | 0.99 | 16 | 100k | 1 | 1 | 5k | Frequent updates accelerate learning; mean_reward = -11.78 |
+| 3 | Freq1 Small Batch | CNN | 1e-4 | 0.99 | 16 | 100k | 1 | 1 | 5k | Frequent updates accelerate learning; mean_reward = -13.78 |
 | 4 | More Gradient Steps | CNN | 8e-5 | 0.99 | 32 | 150k | 4 | 4 | 8k | Multiple gradient steps stabilize but slow convergence; mean_reward = -12.48 |
-| 5 | High Gamma | CNN | 1e-4 | 0.997 | 32 | 120k | 4 | 1 | 7k | Higher discount factor improves long-term planning; mean_reward = -11.52 |
+| 5 | High Gamma | CNN | 1e-4 | 0.997 | 32 | 120k | 4 | 1 | 7k | Higher discount factor improves long-term planning; mean_reward = -12.52 |
 | 6 | Small Buffer Fast Target | CNN | 1.2e-4 | 0.99 | 32 | 50k | 4 | 1 | 4k | Small buffer ↓ memory; fast updates ↑ variance; mean_reward = -13.21 |
 | 7 | MLP Small | MLP | 5e-4 | 0.99 | 64 | 100k | 4 | 1 | 10k | MLPPolicy struggles with high-dim input; mean_reward = -14.05 |
 | 8 | MLP Deep | MLP | 3e-4 | 0.99 | 64 | 150k | 4 | 2 | 8k | Deeper MLP slightly better but still ≈ 2-3 points worse than CNN; mean_reward = -13.48 |
 | 9 | Quick Decay | CNN | 1e-4 | 0.99 | 32 | 120k | 4 | 1 | 8k | Fast ε-decay forces exploitation too early; mean_reward = -12.81 |
-| 10 | Slow LR + Clip | CNN | 5e-5 | 0.99 | 32 | 150k | 4 | 1 | 8k | Conservative approach with gradient clipping; mean_reward = -11.28 |
+| 10 | Slow LR + Clip | CNN | 5e-5 | 0.99 | 32 | 150k | 4 | 1 | 8k | Conservative approach with gradient clipping; mean_reward = -13.28 |
 
 **Best Model:** `excel_exp1_baseline` (saved as `models/Excel_model/excel_best_dqn.zip`)
 
@@ -237,10 +237,10 @@ python play.py --help
 | 🥈 2 | Branis | exp9_small_batch_extended | 4.66 | 700,000 | 1e-4 | 0.99 | 16 | 0.12 | Very long training yields positive return but unstable |
 | 🥉 3 | Owen | exp8_multi_gradient_steps | -6.00 | 325 min | 1e-4 | 0.99 | 32 | 8 | Multi-gradient optimization outperforms single-step |
 | 4 | Owen | exp10_low_gamma_fast_updates | -7.33 | 87 min | 2e-4 | 0.97 | 32 | 1 | Lower gamma enables faster exploitation |
-| 5 | Excel | exp1_baseline | -10.85 | 2,041 | 1e-4 | 0.99 | 32 | N/A | Stable CNN baseline; best among shorter runs |
-| 6 | Excel | exp10_slow_lr_clip | -11.28 | 2,000 | 5e-5 | 0.99 | 32 | N/A | Conservative LR + gradient clipping |
-| 7 | Excel | exp5_high_gamma | -11.52 | 2,000 | 1e-4 | 0.997 | 32 | N/A | Higher discount factor improves planning |
-| 8 | Excel | exp3_freq1_small_batch | -11.78 | 2,000 | 1e-4 | 0.99 | 16 | N/A | Frequent updates help; train time increases |
+| 5 | Excel | exp1_baseline | -12.24 | 2,041 | 1e-4 | 0.99 | 32 | N/A | Stable CNN baseline; best among shorter runs |
+| 6 | Excel | exp10_slow_lr_clip | -13.28 | 2,000 | 5e-5 | 0.99 | 32 | N/A | Conservative LR + gradient clipping |
+| 7 | Excel | exp5_high_gamma | -12.52 | 2,000 | 1e-4 | 0.997 | 32 | N/A | Higher discount factor improves planning |
+| 8 | Excel | exp3_freq1_small_batch | -13.78 | 2,000 | 1e-4 | 0.99 | 16 | N/A | Frequent updates help; train time increases |
 | 9 | Branis | exp1_baseline | -20.33 | 50,000 | 1e-4 | 0.99 | 32 | 0.10 | Short training; baseline for comparison |
 | 10 | Branis | exp8_very_high_gamma | -19.33 | 150,000 | 1e-4 | 0.997 | 32 | 0.10 | Very high gamma; modest improvement over short runs |
 | 11 | Excel | exp2_large_batch | -12.38 | 2,000 | 7e-5 | 0.99 | 64 | N/A | Larger batch = smoother but slower |
@@ -279,7 +279,7 @@ python play.py --help
 ---
 
 ### Excel's Best Model (excel_best_dqn)
-**Mean Reward: -10.85 (3rd best)** | CNN baseline with stability tuning
+**Mean Reward: -12.24 (3rd best)** | CNN baseline with stability tuning
 
 **Episode 3 Return: 15.00** (Best performing episode)
 
@@ -328,25 +328,3 @@ python play.py --model models/Excel_model/excel_best_dqn.zip --episodes 10 --sav
 - **Lesson:** Architecture choice critically impacts sample efficiency
 
 ---
-
-## How to Run the Full Pipeline
-
-```bash
-# 1. Clone repository and install dependencies
-git clone https://github.com/Branis333/Deep-Q-Learning.git
-cd Deep-Q-Learning
-pip install -r requirements.txt
-AutoROM --accept-license
-
-# 2. Train all experiments (takes ~6-8 hours total)
-python train.py
-
-# 3. Evaluate best model
-python play.py --model models/Excel_model/excel_best_dqn.zip --episodes 5
-
-# 4. Analyze results
-python -c "import pandas as pd; print(pd.read_csv('logs/excel_models.csv').sort_values('mean_reward'))"
-```
-
----
-
