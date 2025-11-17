@@ -135,6 +135,14 @@ AutoROM --accept-license
 - `logs/training-metrics/Excel_training_metrics/excel_models.csv`: Results summary
 - `logs/training-metrics/Excel_training_metrics/training_metrics_excel_exp[1-10].csv`: Per-experiment logs
 
+**Video Demonstration:**
+
+**Episode 3 Return: 15.00** (Best performing episode)
+
+[▶️ Watch Excel Demo Video](videos/excel_demo-episode-4.mp4)
+
+![Excel Gameplay Demo](videos/excel_demo-episode-4.gif)
+
 ---
 
 ### 3. Ganza Owen Yhaan 
@@ -161,13 +169,13 @@ AutoROM --accept-license
 - `logs/Owen_training_metrics/owen_models.csv`: Summary results table
 - `logs/Owen_training_metrics/exp[1-10]_*.csv`: Per-experiment episode-level logs
 
-**Video Demonstration:**
+<!-- **Video Demonstration:**
 
 **Episode 1 Return: 1.00** (Best performing episode)
 
 [▶️ Watch Owen Demo Video](videos/owen_demo-episode-0.mp4)
 
-![Owen Gameplay Demo](videos/owen_demo-episode-0.gif)
+![Owen Gameplay Demo](videos/owen_demo-episode-0.gif) -->
 
 ---
 
