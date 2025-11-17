@@ -100,17 +100,16 @@ AutoROM --accept-license
 - `notebooks/branis.ipynb`: Full training pipeline with callbacks and visualization
 - `logs/branis_models.csv`: Summary results table
 
----
-
 **Video Demonstration**
 
-**Mean Reward: 6.7 (BEST OVERALL)** | Extended training (500k timesteps)
+**Mean Reward: 6.7 (BEST OVERALL)**
 
 **Episode 7 Return: 15.00** (Best performing episode)
 
 [▶️ Watch Branis Demo Video](https://drive.google.com/file/d/1MsPk1w5dAUm3NkBr0MdBTS0qG_NyGfPe/view)
 
 ![Branis Gameplay Demo](videos/branis_demo-episode-12.gif)
+
 ---
 
 ### 2. Excel Asaph 
