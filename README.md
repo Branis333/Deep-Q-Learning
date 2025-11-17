@@ -213,9 +213,9 @@ AutoROM --accept-license
 
 **Episode 4 Return: -18.00** (Best performing episode)
 
-[▶️ Watch Roxanne Demo Video](videos/roxanne_demo-episode-4.mp4)
+[▶️ Watch Roxanne Demo Video](videos/roxanne_demo-episode-6.mp4)
 
-![Roxanne Gameplay Demo](videos/roxanne_demo-episode-4.gif)
+![Roxanne Gameplay Demo](videos/roxanne_demo-episode-6.gif)
 
 ---
 
