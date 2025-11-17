@@ -7,7 +7,7 @@
 - Ganza Owen Yhaan
 - Roxanne Niteka
 
-**Best Model Playing Video**
+**Best Model Playing:**
 
 [▶️ Watch Branis Demo Video](https://drive.google.com/file/d/1MsPk1w5dAUm3NkBr0MdBTS0qG_NyGfPe/view)
 
