@@ -1,0 +1,2 @@
+name,mean_reward,std_reward,train_minutes,learning_rate,gamma,batch_size,buffer_size,train_freq,gradient_steps,target_update_interval,exploration_fraction,exploration_initial_eps,exploration_final_eps,verbose,policy_kwargs,model_path
+roxanne_exp7_mlp_small,-21.0,0.0,4.318573896090189,0.0007,0.97,48,150000,4,2,9000,0.18,1.0,0.025,0,"{'net_arch': [128, 128]}",models/roxanne_exp7_mlp_small.zip

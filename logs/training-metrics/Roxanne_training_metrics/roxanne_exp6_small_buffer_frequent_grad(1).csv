@@ -1,0 +1,2 @@
+name,mean_reward,std_reward,train_minutes,learning_rate,gamma,batch_size,buffer_size,train_freq,gradient_steps,target_update_interval,exploration_fraction,exploration_initial_eps,exploration_final_eps,verbose,model_path
+roxanne_exp6_small_buffer_frequent_grad,-20.66666667,0.471404521,1.804329511,0.00018,0.95,32,60000,3,4,6000,0.25,1,0.04,0,models/roxanne_exp6_small_buffer_frequent_grad.zip
