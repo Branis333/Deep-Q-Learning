@@ -13,10 +13,6 @@
 
 ![Branis Gameplay Demo](videos/branis_demo-episode-12.gif)
 
----
-
-![Branis Gameplay Demo](videos/branis_demo-episode-12.gif)
-
 ## Overview
 
 This project implements a Deep Q-Network (DQN) agent trained to play the Atari Pong-v5 environment using Stable Baselines3 and Gymnasium. This requires training and comparing multiple DQN configurations with different hyperparameters and policy architectures (CNNPolicy vs MLPPolicy).
