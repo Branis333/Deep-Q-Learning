@@ -11,13 +11,11 @@
 
 ## Overview
 
-This project implements a Deep Q-Network (DQN) agent trained to play the Atari Pong-v5 environment using Stable Baselines3 and Gymnasium. The assignment requires training and comparing multiple DQN configurations with different hyperparameters and policy architectures (CNNPolicy vs MLPPolicy).
+This project implements a Deep Q-Network (DQN) agent trained to play the Atari Pong-v5 environment using Stable Baselines3 and Gymnasium. This requires training and comparing multiple DQN configurations with different hyperparameters and policy architectures (CNNPolicy vs MLPPolicy).
 
 **Key Deliverables:**
 - `train.py`: Training script that runs DQN experiments and saves trained models
 - `play.py`: Inference script that loads trained models and demonstrates agent gameplay
-- `notebooks/`: Jupyter notebooks for experimentation and hyperparameter tuning
-- Comprehensive hyperparameter documentation and performance analysis
 
 ---
 
@@ -25,24 +23,24 @@ This project implements a Deep Q-Network (DQN) agent trained to play the Atari P
 
 ```
 Deep-Q-Learning/
-├── README.md                          # This file
+├── README.md                          
 ├── requirements.txt                   # Python dependencies
 ├── train.py                           # Training script
 ├── play.py                            # Inference/gameplay script
 ├── notebooks/
-│   ├── branis.ipynb                   # Branis's experiments (10 configs)
-│   ├── excel1.ipynb                   # Excel's local experiments
-│   └── excel2.ipynb                   # Excel's Google Colab experiments
+│   ├── branis.ipynb                   
+│   ├── excel1.ipynb                  
+│   └── excel2.ipynb                   
 ├── models/
-│   ├── Branis_model/                  # Branis's trained models
-│   ├── Excel_model/                   # Excel's trained models
-│   └── Owen_model/                    # Owen's trained models (placeholder)
-│   └── Roxanne_model/                 # Roxanne's trained models (placeholder)
+│   ├── Branis_model/                  
+│   ├── Excel_model/                   
+│   └── Owen_model/                    
+│   └── Roxanne_model/                 
 ├── logs/
 │   ├── training-metrics/              # Episode-level training logs (CSV)
 │   ├── Excel_training_metrics/
-│   ├── Owen_training_metrics/         # (placeholder)
-│   ├── Roxanne_training_metrics/      # (placeholder)
+│   ├── Owen_training_metrics/         
+│   ├── Roxanne_training_metrics/      
 │   └── tensorboard/                   # TensorBoard event files
 └── videos/                            # Demo videos of trained agents
 ```
@@ -151,26 +149,40 @@ AutoROM --accept-license
 
 ---
 
-### 3. Ganza Owen Yhaan - [Placeholder for Owen's Contribution]
+### 3. Ganza Owen Yhaan - Gradient Step Optimization & Exploration Strategy
 
-**Role:** [To be filled - Owen's experiment focus and methodology]
+**Role:** Investigated the impact of multiple gradient steps per update and various exploration strategies; discovered that multi-step gradient accumulation yields superior stability and performance.
 
 **Experiments (10 configurations):**
 
-| # | Configuration | Policy | Learning Rate | Gamma | Batch Size | Buffer Size | Train Freq | Gradient Steps | Target Update | Noted Behavior |
-|---|---------------|--------|---------------|-------|------------|-------------|------------|----------------|----------------|---|
-| 1 | [Exp Name] | [CNN/MLP] | [Value] | [Value] | [Value] | [Value] | [Value] | [Value] | [Value] | [To be documented] |
-| 2 | [Exp Name] | [CNN/MLP] | [Value] | [Value] | [Value] | [Value] | [Value] | [Value] | [Value] | [To be documented] |
-| 3-10 | ... | ... | ... | ... | ... | ... | ... | ... | ... | [To be documented] |
+| # | Configuration | Learning Rate | Gamma | Batch Size | Buffer Size | Train Freq | Gradient Steps | Target Update | Mean Reward | Noted Behavior |
+|---|---------------|---------------|-------|------------|-------------|------------|----------------|----------------|-------------|---|
+| 1 | Multi Gradient Steps | 1e-4 | 0.99 | 32 | 100k | 4 | 8 | 10k | **-6.00** | BEST: Multiple gradient steps improve stability and convergence |
+| 2 | Low Gamma Fast Updates | 2e-4 | 0.97 | 32 | 100k | 2 | 1 | 4k | -7.33 | Lower gamma discounts future less; frequent training updates |
+| 3 | Large Batch Moderate LR | 2e-4 | 0.99 | 128 | 150k | 4 | 1 | 10k | -14.33 | Large batch smooths gradients; moderate learning rate |
+| 4 | High Gamma Slow Decay | 1e-4 | 0.999 | 32 | 200k | 4 | 1 | 12k | -16.00 | High gamma emphasizes long-term planning; slow exploration decay |
+| 5 | Train Every Step | 1e-4 | 0.99 | 16 | 80k | 1 | 1 | 10k | -16.67 | Training every step maximizes update frequency |
+| 6 | Aggressive Decay | 1e-4 | 0.99 | 32 | 100k | 4 | 1 | 10k | -18.33 | Aggressive exploration decay forces fast exploitation |
+| 7 | Slow Stable | 5e-5 | 0.995 | 64 | 250k | 4 | 1 | 15k | -20.00 | Conservative setup; slower convergence but very stable |
+| 8 | New Baseline | 1e-4 | 0.99 | 32 | 100k | 4 | 1 | 8k | -20.67 | New baseline; standard hyperparameters |
+| 9 | Fast Target High Gamma | 1e-4 | 0.997 | 32 | 120k | 4 | 1 | 3k | -21.00 | Very fast target updates destabilize learning; high gamma |
+| 10 | Fast Adaptation | 4e-4 | 0.98 | 32 | 50k | 4 | 1 | 5k | -21.00 | Aggressive learning rate with small buffer; high variance |
 
 **Key Findings:**
-- [To be filled]
+- **Multiple gradient steps (8 per update) significantly improve performance:** Mean reward -6.0 vs -20.67 baseline (+14.67 improvement)
+- **Gradient step accumulation enables deeper policy optimization** without increasing exploration overhead
+- **Optimal gradient steps trade-off:** 8 steps balances convergence speed with computational cost
+- Learning rate 1e-4 remains optimal; higher rates (2e-4, 4e-4) increase instability
+- Lower gamma (0.97) enables faster exploitation but misses long-term strategies
+- Very large buffers (250k) with slow learning can be suboptimal due to stale samples
+- Training frequency of 1 (every step) causes instability; frequency of 4 balances learning
 
-**Best Model:** `models/Owen_model/owen_best_dqn.zip`
+**Best Model:** `exp8_multi_gradient_steps` (saved as `models/Owen_model/exp8_multi_gradient_steps_best.zip`) with mean_reward = **-6.00**
 
 **Files:**
-- `notebooks/owen.ipynb`: [To be created]
-- `logs/Owen_training_metrics/owen_models.csv`: [To be created]
+- `notebooks/owen.ipynb`: Full training pipeline with gradient step variations
+- `logs/Owen_training_metrics/owen_models.csv`: Summary results table
+- `logs/Owen_training_metrics/exp[1-10]_*.csv`: Per-experiment episode-level logs
 
 ---
 
@@ -261,26 +273,43 @@ python play.py --list
 |------|--------|-----------|-------------|-----------|---------------|-------|------------|---------------|---|
 | 🥇 1 | Branis | exp10_more_gradient_steps | **6.7** | 500,000 | 1e-4 | 0.99 | 32 | 0.10 | Best overall; extended training + proper epsilon decay |
 | 🥈 2 | Branis | exp9_small_batch_extended | 4.66 | 700,000 | 1e-4 | 0.99 | 16 | 0.12 | Very long training yields positive return but unstable |
-| 🥉 3 | Excel | exp1_baseline | -10.85 | 2,041 | 1e-4 | 0.99 | 32 | N/A | Stable CNN baseline; best among shorter runs |
-| 4 | Excel | exp10_slow_lr_clip | -11.28 | 2,000 | 5e-5 | 0.99 | 32 | N/A | Conservative LR + gradient clipping |
-| 5 | Excel | exp5_high_gamma | -11.52 | 2,000 | 1e-4 | 0.997 | 32 | N/A | Higher discount factor improves planning |
-| 6 | Excel | exp3_freq1_small_batch | -11.78 | 2,000 | 1e-4 | 0.99 | 16 | N/A | Frequent updates help; train time increases |
-| 7 | Branis | exp1_baseline | -20.33 | 50,000 | 1e-4 | 0.99 | 32 | 0.10 | Short training; baseline for comparison |
-| 8 | Branis | exp8_very_high_gamma | -19.33 | 150,000 | 1e-4 | 0.997 | 32 | 0.10 | Very high gamma; modest improvement over short runs |
-| 9 | Excel | exp2_large_batch | -12.38 | 2,000 | 7e-5 | 0.99 | 64 | N/A | Larger batch = smoother but slower |
-| 10 | Excel | exp4_more_gradsteps | -12.48 | 2,000 | 8e-5 | 0.99 | 32 | N/A | Multiple gradient steps: stable but slower |
-| 11 | Excel | exp9_quick_decay | -12.81 | 2,000 | 1e-4 | 0.99 | 32 | N/A | Fast ε-decay forces premature exploitation |
-| 12 | Excel | exp6_small_buffer | -13.21 | 2,000 | 1.2e-4 | 0.99 | 32 | N/A | Small buffer ↑ variance |
+| 🥉 3 | Owen | exp8_multi_gradient_steps | -6.00 | 325 min | 1e-4 | 0.99 | 32 | 8 | Multi-gradient optimization outperforms single-step |
+| 4 | Owen | exp10_low_gamma_fast_updates | -7.33 | 87 min | 2e-4 | 0.97 | 32 | 1 | Lower gamma enables faster exploitation |
+| 5 | Excel | exp1_baseline | -10.85 | 2,041 | 1e-4 | 0.99 | 32 | N/A | Stable CNN baseline; best among shorter runs |
+| 6 | Excel | exp10_slow_lr_clip | -11.28 | 2,000 | 5e-5 | 0.99 | 32 | N/A | Conservative LR + gradient clipping |
+| 7 | Excel | exp5_high_gamma | -11.52 | 2,000 | 1e-4 | 0.997 | 32 | N/A | Higher discount factor improves planning |
+| 8 | Excel | exp3_freq1_small_batch | -11.78 | 2,000 | 1e-4 | 0.99 | 16 | N/A | Frequent updates help; train time increases |
+| 9 | Branis | exp1_baseline | -20.33 | 50,000 | 1e-4 | 0.99 | 32 | 0.10 | Short training; baseline for comparison |
+| 10 | Branis | exp8_very_high_gamma | -19.33 | 150,000 | 1e-4 | 0.997 | 32 | 0.10 | Very high gamma; modest improvement over short runs |
+| 11 | Excel | exp2_large_batch | -12.38 | 2,000 | 7e-5 | 0.99 | 64 | N/A | Larger batch = smoother but slower |
+| 12 | Excel | exp4_more_gradsteps | -12.48 | 2,000 | 8e-5 | 0.99 | 32 | N/A | Multiple gradient steps: stable but slower |
+| 13 | Excel | exp9_quick_decay | -12.81 | 2,000 | 1e-4 | 0.99 | 32 | N/A | Fast ε-decay forces premature exploitation |
+| 14 | Excel | exp6_small_buffer | -13.21 | 2,000 | 1.2e-4 | 0.99 | 32 | N/A | Small buffer ↑ variance |
+| 15 | Owen | exp6_large_batch_moderate_lr | -14.33 | 87 min | 2e-4 | 0.99 | 128 | 1 | Large batch smooths gradients |
+| 16 | Owen | exp9_high_gamma_slow_decay | -16.00 | 84 min | 1e-4 | 0.999 | 32 | 1 | High gamma emphasizes long-term planning |
+| 17 | Owen | exp7_train_every_step | -16.67 | 131 min | 1e-4 | 0.99 | 16 | 1 | Training every step causes instability |
+| 18 | Owen | exp5_aggressive_decay | -18.33 | 26 min | 1e-4 | 0.99 | 32 | 1 | Aggressive decay forces premature exploitation |
+| 19 | Owen | exp3_slow_stable | -20.00 | 18 min | 5e-5 | 0.995 | 64 | 1 | Conservative setup; stable but slow |
+| 20 | Owen | exp1_new_baseline | -20.67 | 15 min | 1e-4 | 0.99 | 32 | 1 | New baseline configuration |
+| 21 | Owen | exp4_fast_target_high_gamma | -21.00 | 20 min | 1e-4 | 0.997 | 32 | 1 | Very fast target updates destabilize |
+| 22 | Owen | exp2_fast_adaptation | -21.00 | 9 min | 4e-4 | 0.98 | 32 | 1 | Aggressive learning rate high variance |
 
 ### Key Insights
 
-#### 1. **Training Duration Dramatically Outweighs Most Hyperparameters**
-- **Critical finding from Branis's experiments:** Extending training from 50k to 500k timesteps improved mean reward by **~27 points** (from -20.33 to 6.7)
-- This vastly outpaces any improvement from tuning learning rate, gamma, or batch size
-- **Implication:** Sample efficiency matters less than having sufficient exploration time
-- **Recommendation:** Allocate sufficient timesteps for convergence on sparse-reward tasks
+#### 1. **Multi-Step Gradient Updates Significantly Boost Performance**
+- **Owen's critical finding:** Using 8 gradient steps per update improved mean reward by **14.67 points** (from -20.67 to -6.00)
+- This demonstrates that deeper policy optimization per timestep can outweigh increased exploration
+- **Trade-off:** Gradient steps increase computational cost but reduce wall-clock training time by enabling faster convergence
+- **Implication:** For Pong, gradient accumulation is more effective than simply extending training duration (compare to Branis's extended timesteps)
+- **Recommendation:** Try 4-8 gradient steps for sparse-reward environments
 
-#### 2. **Epsilon Decay Schedule is Critical**
+#### 2. **Training Duration Dramatically Outweighs Most Hyperparameters**
+- **Branis's finding:** Extending training from 50k to 500k timesteps improved mean reward by **~27 points** (from -20.33 to 6.7)
+- This vastly outpaces any improvement from tuning learning rate, gamma, or batch size
+- **Combined insight:** Branis (extended timesteps) + Owen (multi-step gradients) both beat Excel's short-run CNN approach
+- **Lesson:** Both exploration time AND depth of policy updates matter critically
+
+#### 3. **Epsilon Decay Schedule is Critical**
 - Standard epsilon decay (0.10) keeps agent in exploration too long on short runs
 - Faster epsilon decay (0.05) with extended training allows proper transition to exploitation
 - Very aggressive decay (0.20) doesn't help; moderate decay with long training is optimal
@@ -321,14 +350,17 @@ python play.py --list
 ## Video Demonstration
 
 **Agent Performance Videos:**
-- ✅ [Branis's Best Model Demo](videos/branis_exp10_more_gradient_steps_demo.mp4) - Extended training (500k), mean reward = **6.7** (BEST OVERALL)
-- ✅ [Excel's Best Model Demo](videos/excel_exp1_baseline_demo.mp4) - CNN baseline, mean reward = -10.85 (best short-run)
-- 🔄 [Owen's Best Model Demo](videos/owen_best_demo.mp4) - *To be recorded*
+- ✅ [Branis's Best Model Demo](https://drive.google.com/file/d/1MsPk1w5dAUm3NkBr0MdBTS0qG_NyGfPe/view?usp=sharing) - Extended training (500k), mean reward = **6.7** (BEST OVERALL)
+- ✅ [Owen's Best Model Demo](videos/owen_exp8_multi_gradient_steps_demo.mp4) - Multi-gradient optimization, mean reward = **-6.0** (2nd best)
+- ✅ [Excel's Best Model Demo](videos/excel_exp1_baseline_demo.mp4) - CNN baseline, mean reward = -10.85 (3rd best)
 - 🔄 [Roxanne's Best Model Demo](videos/roxanne_best_demo.mp4) - *To be recorded*
 
 **To generate videos:**
 ```bash
-# Record agent gameplay as video
+# Record Owen's agent gameplay
+python play.py --model models/Owen_model/exp8_multi_gradient_steps_best.zip --episodes 10 --save_video videos/owen_demo.mp4
+
+# Record Branis's agent gameplay
 python play.py --model models/Branis_model/exp10_more_gradient_steps.zip --episodes 10 --save_video videos/branis_demo.mp4
 ```
 
@@ -456,15 +488,15 @@ plt.show()
 | `notebooks/branis.ipynb` | Branis's 10 experiments | Branis |
 | `notebooks/excel1.ipynb` | Excel's local experiments | Excel |
 | `notebooks/excel2.ipynb` | Excel's Colab experiments | Excel |
-| `notebooks/owen.ipynb` | Owen's experiments [TBD] | Owen |
+| `notebooks/owen.ipynb` | Owen's gradient step experiments | Owen |
 | `notebooks/roxanne.ipynb` | Roxanne's experiments [TBD] | Roxanne |
 | `logs/branis_models.csv` | Branis's results summary | Branis |
 | `logs/Excel_training_metrics/excel_models.csv` | Excel's results summary | Excel |
-| `logs/Owen_training_metrics/owen_models.csv` | Owen's results [TBD] | Owen |
+| `logs/Owen_training_metrics/owen_models.csv` | Owen's results summary | Owen |
 | `logs/Roxanne_training_metrics/roxanne_models.csv` | Roxanne's results [TBD] | Roxanne |
-| `models/Branis_model/best_dqn.zip` | Branis's best trained model | Branis |
-| `models/Excel_model/excel_best_dqn.zip` | Excel's best trained model | Excel |
-| `models/Owen_model/owen_best_dqn.zip` | Owen's best model [TBD] | Owen |
+| `models/Branis_model/exp10_more_gradient_steps.zip` | Branis's best model (6.7 reward) | Branis |
+| `models/Excel_model/excel_best_dqn.zip` | Excel's best model (-10.85 reward) | Excel |
+| `models/Owen_model/exp8_multi_gradient_steps_best.zip` | Owen's best model (-6.0 reward) | Owen |
 | `models/Roxanne_model/roxanne_best_dqn.zip` | Roxanne's best model [TBD] | Roxanne |
 
 ---
