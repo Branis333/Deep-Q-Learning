@@ -7,6 +7,12 @@
 - Ganza Owen Yhaan
 - Roxanne Niteka
 
+**Best Model Playing Video**
+
+[▶️ Watch Branis Demo Video](https://drive.google.com/file/d/1MsPk1w5dAUm3NkBr0MdBTS0qG_NyGfPe/view)
+
+![Branis Gameplay Demo](videos/branis_demo-episode-12.gif)
+
 ---
 
 ## Overview
@@ -169,13 +175,13 @@ AutoROM --accept-license
 - `logs/Owen_training_metrics/owen_models.csv`: Summary results table
 - `logs/Owen_training_metrics/exp[1-10]_*.csv`: Per-experiment episode-level logs
 
-<!-- **Video Demonstration:**
+**Video Demonstration:**
 
 **Episode 1 Return: 1.00** (Best performing episode)
 
 [▶️ Watch Owen Demo Video](videos/owen_demo-episode-0.mp4)
 
-![Owen Gameplay Demo](videos/owen_demo-episode-0.gif) -->
+![Owen Gameplay Demo](videos/owen_demo-episode-0.gif)
 
 ---
 
@@ -185,16 +191,16 @@ AutoROM --accept-license
 
 | Name      | Hyperparameter set                                                                                              | Time steps | Noted Behavior                                                                                                      |
 |-----------|-----------------------------------------------------------------------------------------------------------------|------------|---------------------------------------------------------------------------------------------------------------------|
-| exp1      | lr=0.0002, gamma=0.98, batch=40, epsilon_start=1.0, epsilon_end=0.02, epsilon_decay=0.15                       | 80 000     | Mean reward equals -21.0. Baseline performance. Agent loses every game with no meaningful learning.                 |
-| exp2      | lr=0.00015, gamma=0.97, batch=24, epsilon_start=1.0, epsilon_end=0.03, epsilon_decay=0.2                        | 120 000    | Mean reward equals -20.0. Small batch and fast updates gave slight improvement but still very poor performance.    |
-| exp3      | lr=8e-05, gamma=0.99, batch=64, epsilon_start=1.0, epsilon_end=0.01, epsilon_decay=0.3                          | 200 000    | Mean reward equals -21.0. Large buffer and slow decay did not help. Agent showed no paddle control at all.          |
-| exp4      | lr=0.0003, gamma=0.96, batch=48, epsilon_start=1.0, epsilon_end=0.02, epsilon_decay=0.12                       | 150 000    | Mean reward equals -21.0. Fast learning rate caused complete instability and total failure.                        |
-| exp5      | lr=0.0001, gamma=0.999, batch=40, epsilon_start=1.0, epsilon_end=0.015, epsilon_decay=0.1                      | 220 000    | Mean reward equals -20.33. Extremely high gamma led to overestimation of future rewards and poor short-term play.  |
-| exp6      | lr=0.00018, gamma=0.95, batch=32, epsilon_start=1.0, epsilon_end=0.04, epsilon_decay=0.25                      | 60 000     | Mean reward equals -20.67. Small buffer and frequent gradient steps finished very fast but learned almost nothing. |
-| exp7      | lr=0.0007, gamma=0.97, batch=48, epsilon_start=1.0, epsilon_end=0.025, epsilon_decay=0.18, MLP [128,128]        | 100 000    | Mean reward equals -21.0. Using MLP policy instead of CNN gave no learning at all on visual Pong environment.      |
-| exp8      | lr=0.0004, gamma=0.98, batch=64, epsilon_start=1.0, epsilon_end=0.02, epsilon_decay=0.22, MLP [384,384]        | 100 000    | Mean reward equals -21.0. Deeper MLP still completely failed. Vision-based task requires CNN policy.                |
-| exp9      | lr=0.00012, gamma=0.99, batch=36, epsilon_start=1.0, epsilon_end=0.01, epsilon_decay=0.05                      | 70 000     | Mean reward equals -21.0. Very aggressive exploration decay forced early exploitation with underdeveloped policy. |
-| exp10     | lr=6e-05, gamma=0.99, batch=36, epsilon_start=1.0, epsilon_end=0.015, epsilon_decay=0.15                       | 60 000     | Mean reward equals -21.0. Very slow learning rate and gradient clipping resulted in almost no progress.            |
+| exp1      | lr=0.0002, gamma=0.98, batch=40, epsilon_start=1.0, epsilon_end=0.02, epsilon_decay=0.15                       | 10 000     | Mean reward equals -21.0. Baseline performance. Agent loses every game with no meaningful learning.                 |
+| exp2      | lr=0.00015, gamma=0.97, batch=24, epsilon_start=1.0, epsilon_end=0.03, epsilon_decay=0.2                        | 20 000    | Mean reward equals -20.0. Small batch and fast updates gave slight improvement but still very poor performance.    |
+| exp3      | lr=8e-05, gamma=0.99, batch=64, epsilon_start=1.0, epsilon_end=0.01, epsilon_decay=0.3                          | 30 000    | Mean reward equals -21.0. Large buffer and slow decay did not help. Agent showed no paddle control at all.          |
+| exp4      | lr=0.0003, gamma=0.96, batch=48, epsilon_start=1.0, epsilon_end=0.02, epsilon_decay=0.12                       | 50 000    | Mean reward equals -21.0. Fast learning rate caused complete instability and total failure.                        |
+| exp5      | lr=0.0001, gamma=0.999, batch=40, epsilon_start=1.0, epsilon_end=0.015, epsilon_decay=0.1                      | 50 000    | Mean reward equals -20.33. Extremely high gamma led to overestimation of future rewards and poor short-term play.  |
+| exp6      | lr=0.00018, gamma=0.95, batch=32, epsilon_start=1.0, epsilon_end=0.04, epsilon_decay=0.25                      | 10 000     | Mean reward equals -20.67. Small buffer and frequent gradient steps finished very fast but learned almost nothing. |
+| exp7      | lr=0.0007, gamma=0.97, batch=48, epsilon_start=1.0, epsilon_end=0.025, epsilon_decay=0.18, MLP [128,128]        | 10 000    | Mean reward equals -21.0. Using MLP policy instead of CNN gave no learning at all on visual Pong environment.      |
+| exp8      | lr=0.0004, gamma=0.98, batch=64, epsilon_start=1.0, epsilon_end=0.02, epsilon_decay=0.22, MLP [384,384]        | 10 000    | Mean reward equals -21.0. Deeper MLP still completely failed. Vision-based task requires CNN policy.                |
+| exp9      | lr=0.00012, gamma=0.99, batch=36, epsilon_start=1.0, epsilon_end=0.01, epsilon_decay=0.05                      | 10 000     | Mean reward equals -21.0. Very aggressive exploration decay forced early exploitation with underdeveloped policy. |
+| exp10     | lr=6e-05, gamma=0.99, batch=36, epsilon_start=1.0, epsilon_end=0.015, epsilon_decay=0.15                       | 10 000     | Mean reward equals -21.0. Very slow learning rate and gradient clipping resulted in almost no progress.            |
 
 **Best Model:** `models/Roxanne_model/roxanne_best_dqn.zip`
 
@@ -204,11 +210,11 @@ AutoROM --accept-license
 
 **Video Demonstration:**
 
-**Episode 3 Return: 15.00** (Best performing episode)
+**Episode 4 Return: -18.00** (Best performing episode)
 
-[▶️ Watch Excel Demo Video](videos/excel_demo-episode-4.mp4)
+[▶️ Watch Roxanne Demo Video](videos/roxanne_demo-episode-4.mp4)
 
-![Excel Gameplay Demo](videos/excel_demo-episode-4.gif)
+![Roxanne Gameplay Demo](videos/roxanne_demo-episode-4.gif)
 
 ---
 
@@ -339,5 +345,8 @@ python play.py --model models/Owen_model/exp8_multi_gradient_steps_best.zip --ep
 
 # Record Excel's best model
 python play.py --model models/Excel_model/excel_best_dqn.zip --episodes 10 --save_video videos/excel_demo.mp4
+
+# Record Roxanne's best model
+python play.py --model models/Roxanne_model/roxanne_exp5_high_gamma.zip --episodes 10 --save_video videos/roxanne_demo.mp4
 ```
 ---
