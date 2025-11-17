@@ -112,11 +112,11 @@ AutoROM --accept-license
 | exp2 | lr=7e-05, gamma=0.99, batch=64, epsilon_start=1.0, epsilon_end=0.02, epsilon_decay=0.12 | 1,500,000 | Doubled batch size and larger buffer with lower learning rate slightly worsened performance | -12.38 |
 | exp3 | lr=0.0001, gamma=0.99, batch=16, epsilon_start=1.0, epsilon_end=0.01, epsilon_decay=0.12 | 1,500,000 | Frequent training (train_freq=1) with small batch caused severe instability; worst CNN result | -13.78 |
 | exp4 | lr=8e-05, gamma=0.99, batch=32, epsilon_start=1.0, epsilon_end=0.01, epsilon_decay=0.1 | 1,500,000 | Four gradient steps per update stabilized training but converged more slowly than baseline | -12.48 |
-| exp5 | lr=0.0001, gamma=0.997, batch=32, epsilon_start=1.0, epsilon_end=0.01, epsilon_decay=0.1 | 1,000,000 | Higher gamma (0.99→0.997) provided only marginal improvement; standard gamma well-tuned for Pong | -12.52 |
+| exp5 | lr=0.0001, gamma=0.997, batch=32, epsilon_start=1.0, epsilon_end=0.01, epsilon_decay=0.1 | 1,000,000 | Higher gamma (0.99→0.997) provided only marginal improvement | -12.52 |
 | exp6 | lr=0.00012, gamma=0.99, batch=32, epsilon_start=1.0, epsilon_end=0.02, epsilon_decay=0.2 | 1,000,000 | Small buffer with aggressive exploration decay increased instability; fast epsilon decay forced premature exploitation | -13.21 |
-| exp7 | lr=0.0005, gamma=0.99, batch=64, epsilon_start=1.0, epsilon_end=0.02, epsilon_decay=0.15 | 1,000,000 | MLP policy significantly underperformed CNN; convolutional features essential for image-based Pong | -14.05 |
+| exp7 | lr=0.0005, gamma=0.99, batch=64, epsilon_start=1.0, epsilon_end=0.02, epsilon_decay=0.15 | 1,000,000 | MLP policy significantly underperformed CNN | -14.05 |
 | exp8 | lr=0.0003, gamma=0.99, batch=64, epsilon_start=1.0, epsilon_end=0.02, epsilon_decay=0.15 | 500,000 | Deeper MLP helped slightly but remains fundamentally limited for high-dimensional image inputs | -13.48 |
-| exp9 | lr=0.0001, gamma=0.99, batch=32, epsilon_start=1.0, epsilon_end=0.01, epsilon_decay=0.03 | 500,000 | Very fast exploration decay forced premature exploitation; missing valuable exploration opportunities | -12.81 |
+| exp9 | lr=0.0001, gamma=0.99, batch=32, epsilon_start=1.0, epsilon_end=0.01, epsilon_decay=0.03 | 500,000 | Very fast exploration decay forced premature exploitation | -12.81 |
 | exp10 | lr=5e-05, gamma=0.99, batch=32, epsilon_start=1.0, epsilon_end=0.01, epsilon_decay=0.12 | 500,000 | Conservative low learning rate with gradient clipping provided marginal benefit; insufficient training steps hindered performance | -13.28 |
 
 **Best Model:** `excel_exp1_baseline` (saved as `models/Excel_model/excel_best_dqn.zip`)
