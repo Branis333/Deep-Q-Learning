@@ -82,12 +82,11 @@ else:
     env = make_atari_env(ENV_ID, n_envs=1, seed=SEED, env_kwargs={'render_mode': render_mode})
     env = VecFrameStack(env, n_stack=4)
 
-    # Wrap with video recorder if saving video
+    # Wrap with video recorder 
     if SAVE_VIDEO:
         os.makedirs(os.path.dirname(SAVE_VIDEO) if os.path.dirname(SAVE_VIDEO) else '.', exist_ok=True)
         try:
             from gymnasium.wrappers import RecordVideo
-            # Get the underlying environment to wrap with RecordVideo
             base_env = env.envs[0]
             base_env = RecordVideo(base_env, video_folder=os.path.dirname(SAVE_VIDEO) or '.', 
                                    name_prefix=os.path.basename(SAVE_VIDEO).replace('.mp4', ''),

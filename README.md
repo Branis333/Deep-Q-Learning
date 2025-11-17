@@ -81,18 +81,18 @@ AutoROM --accept-license
 
 **Experiments (10 configurations):**
 
-| # | Configuration | Learning Rate | Gamma | Batch Size | Epsilon Decay | Timesteps | Mean Reward | Noted Behavior |
-|---|---------------|---------------|-------|------------|---------------|-----------|-------------|---|
-| 1 | Baseline | 1e-4 | 0.99 | 32 | 0.10 | 50,000 | -20.33 | Standard epsilon decay; limited exploration time |
-| 2 | Small LR Larger Batch | 5e-5 | 0.99 | 54 | 0.15 | 50,000 | -20.67 | Conservative learning + larger batch; performance degradation |
-| 3 | Higher Gamma | 1.5e-4 | 0.995 | 32 | 0.10 | 50,000 | -21.00 | Higher gamma led to over-optimism; slower effective learning |
-| 4 | Fast Epsilon Decay Extended | 1e-4 | 0.99 | 32 | 0.05 | 500,000 | -11.33 | Faster epsilon decay over extended training; significant improvement |
-| 5 | Higher LR | 2e-4 | 0.99 | 32 | 0.12 | 50,000 | -20.67 | Higher learning rate did not improve outcomes; stays near baseline |
-| 6 | Faster Updates | 1e-4 | 0.99 | 32 | 0.20 | 50,000 | -20.00 | Faster epsilon updates; marginal stability gains only |
-| 7 | Large Batch High LR | 3e-4 | 0.99 | 64 | 0.18 | 50,000 | -20.00 | Combined changes; no improvement over baseline |
-| 8 | Very High Gamma | 1e-4 | 0.997 | 32 | 0.10 | 150,000 | -19.33 | Very high gamma with extended training; modest improvement |
-| 9 | Small Batch Extended | 1e-4 | 0.99 | 16 | 0.12 | 700,000 | 4.66 | Small batch + very long training → positive reward (but unstable in test) |
-| 10 | More Gradient Steps Extended | 1e-4 | 0.99 | 32 | 0.10 | 500,000 | **6.7** | ✓ BEST: Gradient accumulation + extended training → strong positive reward |
+| Name | Hyperparameter set | Time steps | Noted Behavior | Mean Reward |
+|------|-------------------|-----------|---|---|
+| exp1 | lr=1e-4, gamma=0.99, batch=32, epsilon_start=1.0, epsilon_end=0.01, epsilon_decay=0.1 | 50,000 | Standard epsilon decay; limited exploration time | -20.33 |
+| exp2 | lr=5e-5, gamma=0.99, batch=54, epsilon_start=1.0, epsilon_end=0.02, epsilon_decay=0.15 | 50,000 | Increasing batch size and lowering the learning rate slightly worsened performance | -20.67 |
+| exp3 | lr=1.5e-4, gamma=0.995, batch=32, epsilon_start=1.0, epsilon_end=0.01, epsilon_decay=0.1 | 50,000 | A higher gamma led to even lower returns, suggesting slower learning and over-optimism | -21.00 |
+| exp4 | lr=1e-4, gamma=0.99, batch=32, epsilon_start=1.0, epsilon_end=0.01, epsilon_decay=0.05 | 500,000 | Faster epsilon decay over many steps significantly improved performance | -11.33 |
+| exp5 | lr=2e-4, gamma=0.99, batch=32, epsilon_start=1.0, epsilon_end=0.01, epsilon_decay=0.12 | 50,000 | A higher learning rate with the same setup did not improve reward outcomes | -20.67 |
+| exp6 | lr=1e-4, gamma=0.99, batch=32, epsilon_start=1.0, epsilon_end=0.02, epsilon_decay=0.2 | 50,000 | Faster updates with a small buffer slightly improved stability but not overall performance | -20.00 |
+| exp7 | lr=3e-4, gamma=0.99, batch=64, epsilon_start=1.0, epsilon_end=0.02, epsilon_decay=0.18 | 50,000 | A large batch with a higher learning rate produced average but not improved rewards | -20.00 |
+| exp8 | lr=1e-4, gamma=0.997, batch=32, epsilon_start=1.0, epsilon_end=0.01, epsilon_decay=0.1 | 150,000 | Very high gamma slightly improved reward but still kept performance low | -19.33 |
+| exp9 | lr=1e-4, gamma=0.99, batch=16, epsilon_start=1.0, epsilon_end=0.01, epsilon_decay=0.12 | 700,000 | Small batch size with long training time yielded strong positive reward. And yet it failed in the test | 4.66 |
+| exp10 | lr=1e-4, gamma=0.99, batch=32, epsilon_start=1.0, epsilon_end=0.01, epsilon_decay=0.1 | 500,000 | More gradient updates helped the model reach a positive reward | **6.7** |
 
 **Best Model:** `exp10_more_gradient_steps` (saved as `models/Branis_model/exp10_more_gradient_steps.zip`) with mean_reward = **6.7**
 
@@ -106,18 +106,18 @@ AutoROM --accept-license
 
 **Experiments (10 configurations):**
 
-| # | Configuration | Policy | Learning Rate | Gamma | Batch Size | Buffer Size | Train Freq | Gradient Steps | Target Update | Noted Behavior |
-|---|---------------|--------|---------------|-------|------------|-------------|------------|----------------|----------------|---|
-| 1 | Baseline | CNN | 1e-4 | 0.99 | 32 | 100k | 4 | 1 | 10k | Stable baseline; mean_reward = **-12.24** ✓ BEST |
-| 2 | Large Batch | CNN | 7e-5 | 0.99 | 64 | 200k | 4 | 1 | 8k | Large batch improves stability; mean_reward = -12.38 |
-| 3 | Freq1 Small Batch | CNN | 1e-4 | 0.99 | 16 | 100k | 1 | 1 | 5k | Frequent updates accelerate learning; mean_reward = -13.78 |
-| 4 | More Gradient Steps | CNN | 8e-5 | 0.99 | 32 | 150k | 4 | 4 | 8k | Multiple gradient steps stabilize but slow convergence; mean_reward = -12.48 |
-| 5 | High Gamma | CNN | 1e-4 | 0.997 | 32 | 120k | 4 | 1 | 7k | Higher discount factor improves long-term planning; mean_reward = -12.52 |
-| 6 | Small Buffer Fast Target | CNN | 1.2e-4 | 0.99 | 32 | 50k | 4 | 1 | 4k | Small buffer ↓ memory; fast updates ↑ variance; mean_reward = -13.21 |
-| 7 | MLP Small | MLP | 5e-4 | 0.99 | 64 | 100k | 4 | 1 | 10k | MLPPolicy struggles with high-dim input; mean_reward = -14.05 |
-| 8 | MLP Deep | MLP | 3e-4 | 0.99 | 64 | 150k | 4 | 2 | 8k | Deeper MLP slightly better but still ≈ 2-3 points worse than CNN; mean_reward = -13.48 |
-| 9 | Quick Decay | CNN | 1e-4 | 0.99 | 32 | 120k | 4 | 1 | 8k | Fast ε-decay forces exploitation too early; mean_reward = -12.81 |
-| 10 | Slow LR + Clip | CNN | 5e-5 | 0.99 | 32 | 150k | 4 | 1 | 8k | Conservative approach with gradient clipping; mean_reward = -13.28 |
+| Name | Hyperparameter set | Time steps | Noted Behavior | Mean Reward |
+|------|-------------------|-----------|---|---|
+| exp1 | lr=0.0001, gamma=0.99, batch=32, epsilon_start=1.0, epsilon_end=0.01, epsilon_decay=0.1 | 1,500,000 | Baseline with standard CNN policy. Extended training (1.5M steps) allowed stable convergence. Best result among all Excel experiments | **-12.24** |
+| exp2 | lr=7e-05, gamma=0.99, batch=64, epsilon_start=1.0, epsilon_end=0.02, epsilon_decay=0.12 | 1,500,000 | Doubled batch size (32→64) and increased buffer (100k→200k). Lower learning rate combined with larger batches yielded slightly worse performance, suggesting diminishing returns or overly conservative updates | -12.38 |
+| exp3 | lr=0.0001, gamma=0.99, batch=16, epsilon_start=1.0, epsilon_end=0.01, epsilon_decay=0.12 | 1,500,000 | Frequent training (train_freq=1 vs 4) with small batch (16). Accelerated updates caused severe instability and high variance; worst CNN result at -13.78 | -13.78 |
+| exp4 | lr=8e-05, gamma=0.99, batch=32, epsilon_start=1.0, epsilon_end=0.01, epsilon_decay=0.1 | 1,500,000 | Four gradient steps per update (vs 1). Multiple updates stabilized training but converged more slowly, resulting in slightly worse mean reward than baseline | -12.48 |
+| exp5 | lr=0.0001, gamma=0.997, batch=32, epsilon_start=1.0, epsilon_end=0.01, epsilon_decay=0.1 | 1,000,000 | Higher gamma (0.99→0.997) extends credit assignment further into the past. Marginal improvement (-12.52 vs -12.24 baseline) suggests CNN with standard gamma is well-tuned for Pong's reward structure | -12.52 |
+| exp6 | lr=0.00012, gamma=0.99, batch=32, epsilon_start=1.0, epsilon_end=0.02, epsilon_decay=0.2 | 1,000,000 | Small buffer (100k→50k) with aggressive exploration decay (0.1→0.2). Reduced memory footprint but increased instability; fast epsilon decay forces premature exploitation reducing exploration | -13.21 |
+| exp7 | lr=0.0005, gamma=0.99, batch=64, epsilon_start=1.0, epsilon_end=0.02, epsilon_decay=0.15 | 1,000,000 | MLP policy with [256, 256] architecture on raw images. MLPPolicy significantly underperformed CNN (−14.05 vs −12.24), confirming that convolutional feature extraction is essential for image-based Pong | -14.05 |
+| exp8 | lr=0.0003, gamma=0.99, batch=64, epsilon_start=1.0, epsilon_end=0.02, epsilon_decay=0.15 | 500,000 | Deeper MLP with [512, 512] architecture and 2 gradient steps. Deeper networks help but MLP remains fundamentally limited for high-dimensional image inputs; ~2.3 points worse than CNN baseline | -13.48 |
+| exp9 | lr=0.0001, gamma=0.99, batch=32, epsilon_start=1.0, epsilon_end=0.01, epsilon_decay=0.03 | 500,000 | Very fast exploration decay (exploration_fraction=0.03). Agent transitions to greedy exploitation too quickly, missing valuable exploration opportunities; performance degraded to -12.81 | -12.81 |
+| exp10 | lr=5e-05, gamma=0.99, batch=32, epsilon_start=1.0, epsilon_end=0.01, epsilon_decay=0.12 | 500,000 | Conservative approach: halved learning rate (0.0001→5e-05) plus gradient clipping (max_grad_norm=10). Stabilizing mechanisms provided marginal benefit but could not overcome reduced training steps (500k vs 1.5M) | -13.28 |
 
 **Best Model:** `excel_exp1_baseline` (saved as `models/Excel_model/excel_best_dqn.zip`)
 
@@ -133,18 +133,18 @@ AutoROM --accept-license
 
 **Experiments (10 configurations):**
 
-| # | Configuration | Learning Rate | Gamma | Batch Size | Buffer Size | Train Freq | Gradient Steps | Target Update | Mean Reward | Noted Behavior |
-|---|---------------|---------------|-------|------------|-------------|------------|----------------|----------------|-------------|---|
-| 1 | Multi Gradient Steps | 1e-4 | 0.99 | 32 | 100k | 4 | 8 | 10k | **-6.00** | BEST: Multiple gradient steps improve stability and convergence |
-| 2 | Low Gamma Fast Updates | 2e-4 | 0.97 | 32 | 100k | 2 | 1 | 4k | -7.33 | Lower gamma discounts future less; frequent training updates |
-| 3 | Large Batch Moderate LR | 2e-4 | 0.99 | 128 | 150k | 4 | 1 | 10k | -14.33 | Large batch smooths gradients; moderate learning rate |
-| 4 | High Gamma Slow Decay | 1e-4 | 0.999 | 32 | 200k | 4 | 1 | 12k | -16.00 | High gamma emphasizes long-term planning; slow exploration decay |
-| 5 | Train Every Step | 1e-4 | 0.99 | 16 | 80k | 1 | 1 | 10k | -16.67 | Training every step maximizes update frequency |
-| 6 | Aggressive Decay | 1e-4 | 0.99 | 32 | 100k | 4 | 1 | 10k | -18.33 | Aggressive exploration decay forces fast exploitation |
-| 7 | Slow Stable | 5e-5 | 0.995 | 64 | 250k | 4 | 1 | 15k | -20.00 | Conservative setup; slower convergence but very stable |
-| 8 | New Baseline | 1e-4 | 0.99 | 32 | 100k | 4 | 1 | 8k | -20.67 | New baseline; standard hyperparameters |
-| 9 | Fast Target High Gamma | 1e-4 | 0.997 | 32 | 120k | 4 | 1 | 3k | -21.00 | Very fast target updates destabilize learning; high gamma |
-| 10 | Fast Adaptation | 4e-4 | 0.98 | 32 | 50k | 4 | 1 | 5k | -21.00 | Aggressive learning rate with small buffer; high variance |
+| Name | Hyperparameter set | Time steps | Noted Behavior |
+|------|-------------------|-----------|---|
+| exp1 | lr=0.000125, gamma=0.99, batch=32, epsilon_start=1.0, epsilon_end=0.02, epsilon_decay=0.1 | 50,000 | Mean reward = -20.67. Baseline at only 50k steps. Agent barely moves paddle and loses every game quickly. |
+| exp2 | lr=0.0004, gamma=0.98, batch=32, epsilon_start=1.0, epsilon_end=0.05, epsilon_decay=0.15 | 50,000 | Mean reward = -21.0. Worst result. High learning rate and low gamma made training completely unstable. |
+| exp3 | lr=5e-05, gamma=0.995, batch=64, epsilon_start=1.0, epsilon_end=0.01, epsilon_decay=0.1 | 50,000 | Mean reward = -20.0. Very low learning rate caused almost no learning in just 50k steps. |
+| exp4 | lr=0.00015, gamma=0.997, batch=32, epsilon_start=1.0, epsilon_end=0.02, epsilon_decay=0.12 | 50,000 | Mean reward = -21.0. High gamma and fast target updates caused severe overestimation and total failure. |
+| exp5 | lr=0.0001, gamma=0.99, batch=32, epsilon_start=1.0, epsilon_end=0.01, epsilon_decay=0.05 | 150,000 | Mean reward = -18.33. Fast exploration decay gave slight improvement with occasional ball returns. |
+| exp6 | lr=0.0002, gamma=0.99, batch=128, epsilon_start=1.0, epsilon_end=0.02, epsilon_decay=0.1 | 150,000 | Mean reward = -14.33. Large batch and higher learning rate gave clear progress in ball tracking. |
+| exp7 | lr=0.0001, gamma=0.99, batch=16, epsilon_start=1.0, epsilon_end=0.02, epsilon_decay=0.15 | 200,000 | Mean reward = -16.67. Frequent updates helped but tiny batches kept gradients noisy. |
+| exp8 | lr=0.0001, gamma=0.99, batch=32, epsilon_start=1.0, epsilon_end=0.01, epsilon_decay=0.1 | 200,000 | Mean reward = **-6.0**. Best result. Eight gradient steps per update greatly improved learning efficiency. |
+| exp9 | lr=0.0001, gamma=0.999, batch=32, epsilon_start=1.0, epsilon_end=0.02, epsilon_decay=0.2 | 450,000 | Mean reward = -16.0. Very high gamma hindered short-term decision making even after 450k steps. |
+| exp10 | lr=0.0002, gamma=0.97, batch=32, epsilon_start=1.0, epsilon_end=0.03, epsilon_decay=0.1 | 450,000 | Mean reward = -7.33. Second-best result. Lower gamma and fast updates produced strong short-term play. |
 
 **Best Model:** `exp8_multi_gradient_steps` (saved as `models/Owen_model/exp8_multi_gradient_steps_best.zip`) with mean_reward = **-6.00**
 
@@ -235,26 +235,26 @@ python play.py --help
 |------|--------|-----------|-------------|-----------|---------------|-------|------------|---------------|---|
 | 🥇 1 | Branis | exp10_more_gradient_steps | **6.7** | 500,000 | 1e-4 | 0.99 | 32 | 0.10 | Best overall; extended training + proper epsilon decay |
 | 🥈 2 | Branis | exp9_small_batch_extended | 4.66 | 700,000 | 1e-4 | 0.99 | 16 | 0.12 | Very long training yields positive return but unstable |
-| 🥉 3 | Owen | exp8_multi_gradient_steps | -6.00 | 325 min | 1e-4 | 0.99 | 32 | 8 | Multi-gradient optimization outperforms single-step |
-| 4 | Owen | exp10_low_gamma_fast_updates | -7.33 | 87 min | 2e-4 | 0.97 | 32 | 1 | Lower gamma enables faster exploitation |
+| 🥉 3 | Owen | exp8_multi_gradient_steps | -6.0 | 200,000 | 1e-4 | 0.99 | 32 | 0.10 | Best result; eight gradient steps per update greatly improved efficiency |
+| 4 | Owen | exp10_lower_gamma_fast_updates | -7.33 | 450,000 | 2e-4 | 0.97 | 32 | 0.10 | Second-best; lower gamma and fast updates produced strong short-term play |
 | 5 | Excel | exp1_baseline | -12.24 | 2,041 | 1e-4 | 0.99 | 32 | N/A | Stable CNN baseline; best among shorter runs |
 | 6 | Excel | exp10_slow_lr_clip | -13.28 | 2,000 | 5e-5 | 0.99 | 32 | N/A | Conservative LR + gradient clipping |
 | 7 | Excel | exp5_high_gamma | -12.52 | 2,000 | 1e-4 | 0.997 | 32 | N/A | Higher discount factor improves planning |
 | 8 | Excel | exp3_freq1_small_batch | -13.78 | 2,000 | 1e-4 | 0.99 | 16 | N/A | Frequent updates help; train time increases |
-| 9 | Branis | exp1_baseline | -20.33 | 50,000 | 1e-4 | 0.99 | 32 | 0.10 | Short training; baseline for comparison |
-| 10 | Branis | exp8_very_high_gamma | -19.33 | 150,000 | 1e-4 | 0.997 | 32 | 0.10 | Very high gamma; modest improvement over short runs |
-| 11 | Excel | exp2_large_batch | -12.38 | 2,000 | 7e-5 | 0.99 | 64 | N/A | Larger batch = smoother but slower |
-| 12 | Excel | exp4_more_gradsteps | -12.48 | 2,000 | 8e-5 | 0.99 | 32 | N/A | Multiple gradient steps: stable but slower |
-| 13 | Excel | exp9_quick_decay | -12.81 | 2,000 | 1e-4 | 0.99 | 32 | N/A | Fast ε-decay forces premature exploitation |
-| 14 | Excel | exp6_small_buffer | -13.21 | 2,000 | 1.2e-4 | 0.99 | 32 | N/A | Small buffer ↑ variance |
-| 15 | Owen | exp6_large_batch_moderate_lr | -14.33 | 87 min | 2e-4 | 0.99 | 128 | 1 | Large batch smooths gradients |
-| 16 | Owen | exp9_high_gamma_slow_decay | -16.00 | 84 min | 1e-4 | 0.999 | 32 | 1 | High gamma emphasizes long-term planning |
-| 17 | Owen | exp7_train_every_step | -16.67 | 131 min | 1e-4 | 0.99 | 16 | 1 | Training every step causes instability |
-| 18 | Owen | exp5_aggressive_decay | -18.33 | 26 min | 1e-4 | 0.99 | 32 | 1 | Aggressive decay forces premature exploitation |
-| 19 | Owen | exp3_slow_stable | -20.00 | 18 min | 5e-5 | 0.995 | 64 | 1 | Conservative setup; stable but slow |
-| 20 | Owen | exp1_new_baseline | -20.67 | 15 min | 1e-4 | 0.99 | 32 | 1 | New baseline configuration |
-| 21 | Owen | exp4_fast_target_high_gamma | -21.00 | 20 min | 1e-4 | 0.997 | 32 | 1 | Very fast target updates destabilize |
-| 22 | Owen | exp2_fast_adaptation | -21.00 | 9 min | 4e-4 | 0.98 | 32 | 1 | Aggressive learning rate high variance |
+| 9 | Owen | exp9_very_high_gamma | -16.0 | 450,000 | 1e-4 | 0.999 | 32 | 0.20 | Very high gamma hindered short-term decision making |
+| 10 | Owen | exp5_fast_exploration_decay | -18.33 | 150,000 | 1e-4 | 0.99 | 32 | 0.05 | Fast exploration decay gave slight improvement |
+| 11 | Owen | exp7_small_batch_frequent_updates | -16.67 | 200,000 | 1e-4 | 0.99 | 16 | 0.15 | Frequent updates helped but tiny batches kept gradients noisy |
+| 12 | Owen | exp6_large_batch_higher_lr | -14.33 | 150,000 | 2e-4 | 0.99 | 128 | 0.10 | Large batch and higher learning rate gave clear progress in ball tracking |
+| 13 | Owen | exp3_very_low_lr | -20.0 | 50,000 | 5e-5 | 0.995 | 64 | 0.10 | Very low learning rate caused almost no learning in 50k steps |
+| 14 | Branis | exp1_baseline | -20.33 | 50,000 | 1e-4 | 0.99 | 32 | 0.10 | Short training; baseline for comparison |
+| 15 | Branis | exp8_very_high_gamma | -19.33 | 150,000 | 1e-4 | 0.997 | 32 | 0.10 | Very high gamma; modest improvement over short runs |
+| 16 | Owen | exp1_baseline_short | -20.67 | 50,000 | 1.25e-4 | 0.99 | 32 | 0.10 | Baseline at only 50k steps; agent barely moves paddle |
+| 17 | Owen | exp2_worst_unstable | -21.0 | 50,000 | 4e-4 | 0.98 | 32 | 0.15 | Worst result; high LR and low gamma made training unstable |
+| 18 | Owen | exp4_overestimation_failure | -21.0 | 50,000 | 1.5e-4 | 0.997 | 32 | 0.12 | High gamma and fast targets caused severe overestimation |
+| 19 | Excel | exp2_large_batch | -12.38 | 2,000 | 7e-5 | 0.99 | 64 | N/A | Larger batch = smoother but slower |
+| 20 | Excel | exp4_more_gradsteps | -12.48 | 2,000 | 8e-5 | 0.99 | 32 | N/A | Multiple gradient steps: stable but slower |
+| 21 | Excel | exp9_quick_decay | -12.81 | 2,000 | 1e-4 | 0.99 | 32 | N/A | Fast ε-decay forces premature exploitation |
+| 22 | Excel | exp6_small_buffer | -13.21 | 2,000 | 1.2e-4 | 0.99 | 32 | N/A | Small buffer ↑ variance |
 
 ---
 
@@ -270,7 +270,7 @@ python play.py --help
 ---
 
 ### Owen's Best Model (exp8_multi_gradient_steps)
-**Mean Reward: -6.0 (2nd best)** | Multi-gradient optimization
+**Mean Reward: -6.0 (3rd best)** | Eight gradient steps per update greatly improved efficiency
 
 **Episode 1 Return: 1.00** (Best performing episode)
 
