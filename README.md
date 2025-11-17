@@ -289,7 +289,7 @@ python play.py --help
 
 [▶️ Watch Excel Demo Video](videos/excel_demo-episode-4.mp4)
 
-![Pong Gameplay Demo](videos/excel_demo-episode-4.gif)
+![Excel Gameplay Demo](videos/excel_demo-episode-4.gif)
 ---
 
 ### Roxanne's Best Model
