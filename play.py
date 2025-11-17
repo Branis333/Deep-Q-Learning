@@ -1,8 +1,8 @@
-# Cell 1: Load existing trained model (if present) and verify environment'
-#pip  install stable_baselines3
+# Load existing trained model (if present) and verify environment'
+# pip  install stable_baselines3
 import os, time, sys
 import gymnasium as gym
-import ale_py  # ensure ALE namespace is registered
+import ale_py  
 from stable_baselines3 import DQN
 import numpy as np
 from stable_baselines3.common.evaluation import evaluate_policy
@@ -12,7 +12,6 @@ from stable_baselines3.common.save_util import load_from_zip_file
 
 ENV_ID = "ALE/Pong-v5"
 
-# Recreate the same preprocessing used for CNN training: make_atari_env + 4-frame stack
 try:
     env = make_atari_env(ENV_ID, n_envs=1, seed=42)
     env = VecFrameStack(env, n_stack=4)
@@ -22,7 +21,6 @@ except Exception as e:
     )
 env.close()
 
-# Attempt to patch older saved references expecting 'numpy._core.numeric'
 try:
     import numpy.core.numeric as _numeric
     if 'numpy._core.numeric' not in sys.modules:
@@ -31,12 +29,11 @@ except Exception:
     pass
 
 BEST_MODEL_PATH = os.path.join('models', 'Branis_model\\exp10_more_gradient_steps.zip')
-MODEL_TO_PLAY = BEST_MODEL_PATH  # set to a specific experiment zip to test that model
+MODEL_TO_PLAY = BEST_MODEL_PATH  
 N_EPISODES = 1
 SEED = 42
 
-# For pure inference we can use a small replay buffer to avoid huge RAM usage
-INFERENCE_BUFFER_SIZE = 1_000  # reduce if memory is very tight (e.g., 200)
+INFERENCE_BUFFER_SIZE = 1_000  
 
 
 def list_models():
@@ -59,14 +56,12 @@ else:
 
     model = None
     try:
-        # First try to load while overriding large memory settings
         model = DQN.load(
             MODEL_TO_PLAY,
             env=env,
             custom_objects={
                 'buffer_size': INFERENCE_BUFFER_SIZE,
                 'learning_starts': 0,
-                # keep other saved params; we only downsize memory-heavy ones
             },
         )
     except ModuleNotFoundError as e:
@@ -83,7 +78,6 @@ else:
         except Exception as e2:
             print('[WARN] Patch retry failed:', e2)
     except (ValueError, MemoryError) as e:
-        # Handle numpy RNG pickle mismatch or large buffer memory error
         print('[WARN] Direct load failed (ValueError/MemoryError):', e)
     except Exception as e:
         print('[WARN] Unexpected error on direct load:', e)
@@ -91,9 +85,8 @@ else:
     if model is None:
         print('[INFO] Falling back to parameter-only load (skipping metadata)...')
         try:
-            # Avoid deserializing JSON data that can contain incompatible RNG objects
             _data, params, _vars = load_from_zip_file(MODEL_TO_PLAY, device='cpu', load_data=False, print_system_info=False)
-            # Instantiate a fresh lightweight DQN for inference only (small buffer, no training planned)
+            # Instantiating a fresh lightweight DQN for inference only (small buffer, no training planned)
             model = DQN(
                 'CnnPolicy',
                 env,
