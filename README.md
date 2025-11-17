@@ -1,4 +1,6 @@
 ## Experiment Summary
+## MEMBER NAME : Sumba Branis
+
 
 | Name | Hyperparameter set | Time steps | Noted behavior |
 | --- | --- | --- | --- |
@@ -12,4 +14,3 @@
 | exp8 | lr=1e-4, gamma=0.997, batch=32, epsilon_start=1.0, epsilon_end=0.01, epsilon_decay=0.1 | 150000 | Mean reward = -19.33. Very high gamma slightly improved reward but still kept performance low. |
 | exp9 | lr=1e-4, gamma=0.99, batch=16, epsilon_start=1.0, epsilon_end=0.01, epsilon_decay=0.12 | 700000 | Mean reward = 4.66. Small batch size with long training time yielded strong positive reward, but the agent failed in testing. |
 | exp10 | lr=1e-4, gamma=0.99, batch=32, epsilon_start=1.0, epsilon_end=0.01, epsilon_decay=0.1 | 500000 | Mean reward = 6.7. More gradient updates helped the model reach a positive reward. |
-
